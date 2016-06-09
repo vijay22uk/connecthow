@@ -1,0 +1,20 @@
+{
+  "name": "connecthow",
+  "description": "connect and learn",
+  "main": "./application/app.js",
+  "authors": [
+    "vijay"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/vijay22uk/connecthow",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io-client": "^1.4.6"
+  }
+}
