@@ -1,0 +1,29 @@
+   body.home{
+	    background-color: #5D5A5A;
+		
+   }
+   
+   
+   .modal-cont{
+	 background-color: #534F7B;
+    color: white;
+   }
+   .modal-cont input{
+       color: black;
+   }
+   .canvas{
+       border:1px solid red;
+   }
+   
+   .right-panel{
+       border: 1px solid green;
+       height: 100%;
+   }
+   .left-panel{
+       border: 1px solid green;
+       height: 100%;
+   }
+   
+   .fullheight{
+       height:100%;
+   }

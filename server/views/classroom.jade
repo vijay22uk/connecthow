@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .container-fluid.fullheight
+      .col-md-4.left-panel.fullheight
+        .users
+          ul
+            li
+              | Vijay pandey
+            li
+              | Vijay pandey
+        .chatbox
+      .col-md-8.right-panel.fullheight
+        .col-md-12
+          .menu
+            | menu
+        .col-md-12.fullheight
+          .canvas(style="height: 400px;width: 1000px;")
+            canvas#canvasuiele
+    script.
+     window.user = {};
+     window.user.emailid = "#{emailid}";
+     window.user.classroom = "#{classRoom}";
+    | <script src='/javascript/main.js'></script> <script src='/vendor/fabric.min.js'></script>

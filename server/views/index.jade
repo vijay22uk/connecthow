@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    #welcome-modal.modal.fade.in(tabindex='-1', role='dialog',data-keyboard= 'false', data-backdrop= 'static',style="display:block")
+      .modal-dialog
+        .modal-content.modal-cont
+          .modal-header
+            h4.modal-title.text-center Welcome to Smart GURU 
+          .modal-body
+            .row
+              form.col-sm-5()
+                .container-fluid
+                    div.form-group
+                      | Email
+                      input#email(type="email" ,name="emailid" placeholder="Email" required ="required")
+                    div.form-group
+                      Class Room
+                      input#classroom(type="text" ,name="classroom" placeholder="class room", required ="required")
+                      label.radio-inline
+                        input(type='radio', name='optradio' , checked="checked" value="0")
+                        | Create
+                      label.radio-inline
+                        input(type='radio', name='optradio',  value="1")
+                        | Join
+                    div
+                      input.btn.btn-primary(type="submit" value="Enter class room")
+    | <script src='/javascript/home.js'></script>
