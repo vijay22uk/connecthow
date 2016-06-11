@@ -12,16 +12,10 @@ block content
                 .container-fluid
                     div.form-group
                       | Email
-                      input#email(type="email" ,name="emailid" placeholder="Email" required ="required")
+                      input#email.form-control(type="email" ,name="emailid" placeholder="Email" required ="required")
                     div.form-group
                       Class Room
-                      input#classroom(type="text" ,name="classroom" placeholder="class room", required ="required")
-                      label.radio-inline
-                        input(type='radio', name='optradio' , checked="checked" value="0")
-                        | Create
-                      label.radio-inline
-                        input(type='radio', name='optradio',  value="1")
-                        | Join
+                      input#classroom.form-control(type="text" ,name="classroom" placeholder="class room", required ="required")
                     div
                       input.btn.btn-primary(type="submit" value="Enter class room")
     | <script src='/javascript/home.js'></script>

@@ -5,6 +5,7 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require("body-parser");
+var socketHelper = require('./modules/socket');
 var mongoDBConnectionString = "mongodb://localhost/VJ";
 var app = express();
  app.use(bodyParser.json());
@@ -46,16 +47,16 @@ app.get('/classroom/:classroom/:emailid', function (req, res, next) {
 
 
 
-
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-  socket.on('message', function(msg){
-    io.emit('message', msg);
-  });
-});
+socketHelper(io);
+// io.on('connection', function(socket){
+//   console.log('a user connected');
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
+//   socket.on('message', function(msg){
+//     io.emit('message', msg);
+//   });
+// });
 
 http.listen(port, function () {
     console.log('https  listening on :%d', port);

@@ -2,7 +2,11 @@
 	    background-color: #5D5A5A;
 		
    }
-   
+   html,
+body{
+  height: 100%;
+  width: 100%;
+}
    
    .modal-cont{
 	 background-color: #534F7B;
@@ -27,3 +31,80 @@
    .fullheight{
        height:100%;
    }
+   #callAll{
+       background-color: green;
+   }
+   #disconnectCall{
+       background-color: red;
+   }
+   .online{
+    float: right;
+    vertical-align: middle;
+    background-color: #6bbbff;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+   }
+   .online-call{
+    float: right;
+    vertical-align: middle;
+    background-color: red;;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+   }
+   
+   /**** check **********/
+.list-group-item span{
+    color:black;
+}
+.main-layout{
+  width: 100%;
+  height:100%;
+  float: left;
+  position:relative;
+  padding-bottom: 45px;
+  padding-top: 57px;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow: hidden;
+  transition: left 0.15s ease-in-out;
+}
+.userlist{
+    background: #535251;
+    padding: 9px 0px 0px 4px;
+    width: 320px;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    color: white;
+}
+
+
+#canvascontainer{
+    left: 0px;
+    position: absolute;
+    right: 0px;
+    top:0px;
+    bottom:0px;
+    overflow:auto;
+    min-width:1020px;
+    min-height:768px;
+}
+
+.canvas-container {
+    overflow:auto;
+}
+#mainayout {
+    width:100%;
+    min-width:1024px;
+    top:108px;
+    left:0;
+    position:absolute;
+}
+.caller-switch{
+    cursor: pointer;
+}
+#yourname{
+ color:#0093ff
+}

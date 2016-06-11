@@ -223,34 +223,30 @@ WebRtcDemo.ConnectionManager = (function () {
         },
     // Create a new WebRTC Peer Connection with the given partner
         _createConnection = function (partnerClientId, isVideoCall) {
-            var connection = new RTCPeerConnection({ iceServers: iceServerList || _iceServers }, {
+            var connection = new RTCPeerConnection({ iceServers:  _iceServers }, {
                 optional: [
                     { DtlsSrtpKeyAgreement: true }
                 ]
             });
             connection.parterId = partnerClientId;
-            var isUserInList = false;
             // ICE Candidate Callback
             connection.onicecandidate = function (event) {
                 if (event.candidate) {
                     var sendData = {
-                        target: partnerClientId,
-                        sender: userInfo.userId,
-                        messageId: null,
-                        event: 'audio',
+                        room: user.classroom,
+                        emailId: user.emailid,
+                        target: 'audio',
                         webRtcTarget: connection.parterId,
-                        subEvent: 'candidate',
+                        type: 'candidate',
                         payload: {
                             options: {
-                                candidate: JSON.stringify(event.candidate),
-                                id: id++
+                                candidate: JSON.stringify(event.candidate)
                             }
                         }
                     }
                     socket.emit('message', sendData);
                 } else {
                     // Null candidate means we are done collecting candidates.
-                    //console.log('WebRTC: ICE candidate gathering complete');
                 }
             };
 
@@ -264,11 +260,10 @@ WebRtcDemo.ConnectionManager = (function () {
                     'readyState': connection.readyState,
                     'signalingState': connection.signalingState
                 };
+                
                 if (states.iceGatheringState === "complete" && states.iceConnectionState === "failed") {
                     _closeConnection(connection.parterId);
-
-                }
-               
+                    }
             };
 
             // Stream handlers
@@ -294,23 +289,6 @@ WebRtcDemo.ConnectionManager = (function () {
             connection.onicecandidate = function (event) {
                 if (event.candidate) {
                     // Found a new candidate
-
-                    var sendData = {
-                        target: room,
-                        sender: userInfo.userId,
-                        messageId: null,
-                        event: 'audio',
-                        subEvent: 'candidate_conf',
-                        payload: {
-                            options: {
-                                candidate: JSON.stringify(event.candidate),
-                                id: id++
-                            }
-                        }
-                    }
-                    // socket.emit('message', sendData);
-
-                    // _signaler.sendSignalConference(JSON.stringify({ "candidate": event.candidate }), partnerClientId);
                 } else {
                     // Null candidate means we are done collecting candidates.
                     //console.log('WebRTC: ICE candidate gathering complete');
@@ -351,13 +329,14 @@ WebRtcDemo.ConnectionManager = (function () {
 
     // Process a newly received SDP signal
         _receivedSdpSignal = function (connection, partnerClientId, sdp, isVideoCall) {
-            // console.log('new signal *******************************');
+             console.log('new signal *******************************');
 
             connection.setRemoteDescription(new RTCSessionDescription(sdp), function () {
                 if (connection.remoteDescription.type == "offer") {
-                    //console.log('WebRTC: received offer, sending response...');
+                    console.log('WebRTC: received offer, sending response...');
                     _onReadyForStreamCallback(connection);
                     connection.createAnswer(function (desc) {
+                        console.log('WebRTC: createAnswer');
                         //desc.sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
                         // desc.sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\n b=AS:40\r\n');
                         // desc.sdp.replace('/48000/', '/8000/');
@@ -374,13 +353,13 @@ WebRtcDemo.ConnectionManager = (function () {
                             'sprop-maxcapturerate': 8000
                         });
                         connection.setLocalDescription(desc, function () {
-
+console.log('WebRTC: setLocalDescription');
                             var sendData = {
-                                target: partnerClientId,
-                                sender: userInfo.userId,
-                                messageId: null,
-                                event: 'audio',
-                                subEvent: 'answerSDP',
+                               room: user.classroom,
+                               emailId: user.emailid,
+                                target: 'audio',
+                                type: 'answerSDP',
+                                webRtcTarget: connection.parterId,
                                 payload: {
                                     options: {
                                         SDP: JSON.stringify(connection.localDescription)
@@ -388,7 +367,6 @@ WebRtcDemo.ConnectionManager = (function () {
                                 }
                             }
                             socket.emit('message', sendData);
-                            //_signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId, isVideoCall);
                         }, function (err) {
                             console.error(err);
                         });
@@ -410,21 +388,7 @@ WebRtcDemo.ConnectionManager = (function () {
                     // _onReadyForStreamCallback(connection);
                     connection.createAnswer(function (desc) {
                         connection.setLocalDescription(desc, function () {
-                            var sendData = {
-                                target: room,
-                                sender: userInfo.userId,
-                                messageId: null,
-                                event: 'audio',
-                                subEvent: 'answerSDP_conf',
-                                payload: {
-                                    options: {
-                                        SDP: JSON.stringify(connection.localDescription)
-                                    }
-                                }
-                            }
-                            console.info("Sending Answer SPD to Room ************************************ : " + room);
-                            socket.emit('message', sendData);
-                            //  _signaler.sendSignalConference(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
+              
                         });
                     });
                 } else if (connection.remoteDescription.type == "answer") {
@@ -436,19 +400,12 @@ WebRtcDemo.ConnectionManager = (function () {
         },
     // Hand off a new signal from the signaler to the connection
         _newSignal = function (partnerClientId, data, isVideoCall,force) {
-            
-            if (force) {
-                _closeConnection(partnerClientId);
-            }
 
             var signal = data,
                 connection = _getConnection(partnerClientId, isVideoCall);
 
-
-
             // Route signal based on type
             if (signal.SDP) {
-
                 _receivedSdpSignal(connection, partnerClientId, JSON.parse(signal.SDP), isVideoCall);
             } else if (signal.candidate) {
                 _receivedCandidateSignal(connection, partnerClientId, JSON.parse(signal.candidate));
@@ -562,7 +519,7 @@ WebRtcDemo.ConnectionManager = (function () {
                 // Let the user know which streams are leaving
                 // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
                 _onStreamRemovedCallback(connection, null);
-                
+                debugger
                 // Close the connection
                 connection.close();
                 delete _connections[partnerClientId]; // Remove the property
@@ -602,11 +559,10 @@ WebRtcDemo.ConnectionManager = (function () {
                 connection.setLocalDescription(desc, function () {
                     // audio bandwidth 50 kilobits per second
                     var sendData = {
-                        target: room,
-                        sender: userInfo.userId,
-                        messageId: null,
-                        event: 'audio',
-                        subEvent: 'offerSDP',
+                        room: user.classroom,
+                        emailId: user.emailid,
+                        target: 'audio',
+                        type: 'offerSDP',
                         webRtcTarget: connection.parterId,
                         force:force,
                         payload: {
@@ -616,7 +572,6 @@ WebRtcDemo.ConnectionManager = (function () {
                         }
                     }
                     socket.emit('message', sendData);
-                    // _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId, isVideoCall);
                 }, function (err) {
                     console.log(err);
                 });
@@ -635,21 +590,6 @@ WebRtcDemo.ConnectionManager = (function () {
             // Send an offer for a connection
             connection.createOffer(function (desc) {
                 connection.setLocalDescription(desc, function () {
-                    var sendData = {
-                        target: room,
-                        sender: userInfo.userId,
-                        messageId: null,
-                        event: 'audio',
-                        webRtcTarget: connection.parterId,
-                        subEvent: 'OfferSDP_Cong',
-                        payload: {
-                            options: {
-                                SDP: JSON.stringify(connection.localDescription)
-                            }
-                        }
-
-                    }
-                    socket.emit('message', sendData);
                 });
             });
         }

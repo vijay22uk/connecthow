@@ -1,24 +1,27 @@
 extends layout
 
 block content
-    .container-fluid.fullheight
-      .col-md-4.left-panel.fullheight
-        .users
-          ul
-            li
-              | Vijay pandey
-            li
-              | Vijay pandey
-        .chatbox
-      .col-md-8.right-panel.fullheight
-        .col-md-12
-          .menu
-            | menu
-        .col-md-12.fullheight
-          .canvas(style="height: 400px;width: 1000px;")
-            canvas#canvasuiele
+    .container-fluid.fullheight.main-layout
+      #mainlayout
+        #canvascontainer
+          canvas#canvasuiele(resize="true" width="1280" height="720")
+    .userlist
+      .div
+        .div
+          h3
+            span
+            | Class Room : 
+            span(data-bind="text: classRoom")
+          h4 
+            span#yourname
+          ul.list-group(data-bind="foreach: participants")
+            li.list-group-item
+              span(data-bind="text: userName")
+              span.online.caller-switch(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
+              span.online-call.caller-switch(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
+              audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + userName}")
     script.
      window.user = {};
      window.user.emailid = "#{emailid}";
      window.user.classroom = "#{classRoom}";
-    | <script src='/javascript/main.js'></script> <script src='/vendor/fabric.min.js'></script>
+    |<script src='/javascript/adapter.js'></script> <script src='/javascript/connectionmanager.js'></script>  <script src='/javascript/main.js'></script> <script src='/vendor/fabric.min.js'></script>
