@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-console.log("Running");
+  var port = 8080;
 var app = require('express')();
 var express = require('express');
 var path = require('path');
@@ -11,7 +11,8 @@ var app = express();
 var db = require('./modules/dbutil');
 // init HTTPs server
 var options = {
-    pfx: fs.readFileSync('server/cert/tls.pfx'),
+    key: fs.readFileSync('server/cert/private.pem'),
+    cert: fs.readFileSync('server/cert/public.pem')
 };
 var http = require('https').Server(options,app);
 var io = require('socket.io')(http);
@@ -30,16 +31,20 @@ io.on('connection', function(socket){
   });
 });
 
-   console.log("db ::" + mongoDBConnectionString);
-   db.connect(mongoDBConnectionString, function (err) {
-        if (err) {
-            console.log('Unable to connect to Mongo.');
-            process.exit(1)
-        } else {
-            http.listen(port, function () {
-                console.log('https  listening on :%d', port);
-            });
-        }
-    });
+http.listen(port, function () {
+    console.log('https  listening on :%d', port);
+});
+
+   //console.log("db ::" + mongoDBConnectionString);
+   //db.connect(mongoDBConnectionString, function (err) {
+   //     if (err) {
+   //         console.log('Unable to connect to Mongo.');
+   //         process.exit(1)
+   //     } else {
+   //         http.listen(port, function () {
+   //             console.log('https  listening on :%d', port);
+   //         });
+   //     }
+   // });
 
 })();
