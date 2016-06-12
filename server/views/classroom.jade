@@ -15,10 +15,11 @@ block content
           h4 
             span#yourname
           ul.list-group(data-bind="foreach: participants")
-            li.list-group-item
+            li.list-group-item( data-bind="css: { thisuser: isThisUser() }")
               span(data-bind="text: userName")
-              span.online.caller-switch(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
-              span.online-call.caller-switch(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
+              span.onlinethis(data-bind="visible: isThisUser(), click : callThis",data-toggle='tooltip', title="change pencil color")
+              span.online.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
+              span.online-call.caller-switch.fa.fa-phone(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
               audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + userName}")
     script.
      window.user = {};

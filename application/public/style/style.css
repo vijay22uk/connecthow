@@ -38,17 +38,19 @@ body{
        background-color: red;
    }
    .online{
-    float: right;
-    vertical-align: middle;
-    background-color: #6bbbff;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
+    color:green !important;
    }
    .online-call{
+    color: red !important;
+   
+   }
+   .thisuser .caller-switch{
+       display: none !important;
+   }
+   .onlinethis{
     float: right;
     vertical-align: middle;
-    background-color: red;;
+    background-color: black;
     height: 20px;
     width: 20px;
     border-radius: 50%;
@@ -78,6 +80,7 @@ body{
     top: 0px;
     bottom: 0px;
     color: white;
+    z-index: 2;
 }
 
 
@@ -104,6 +107,9 @@ body{
 }
 .caller-switch{
     cursor: pointer;
+    cursor: pointer;
+    float: right;
+    font-size: 25px;
 }
 #yourname{
  color:#0093ff

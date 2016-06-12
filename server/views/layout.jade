@@ -8,6 +8,7 @@ html(lang='en')
     meta(name='author', content='')
     title Smart GURU 
     link(href='/style/bootstrap.min.css', rel='stylesheet')
+    link(href='/style/font-awesome.min.css', rel='stylesheet')
     link(href='/style/style.css', rel='stylesheet')
     link(href='/style/toastr.min.css' , rel='stylesheet')
     script(src='/vendor/knockout-3.1.0.js')
@@ -16,7 +17,7 @@ html(lang='en')
     script(src='/vendor/toastr.min.js')
     script(src='/vendor/bootstrap.min.js')
   body.overflowhidden
-    nav.navbar.navbar-inverse(style="position: fixed;top: 0;width: 100%;left: 0;")
+    nav.navbar.navbar-inverse(style="position: fixed;top: 0;width: 100%;left: 0;z-index: 1;")
       .container-fluid
         .navbar-header
           a.navbar-brand(href='/') Smart Guru

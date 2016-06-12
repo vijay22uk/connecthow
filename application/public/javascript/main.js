@@ -231,14 +231,14 @@
             connectionManager.closeConnection(self.emailId);
             connectionManager.deleteMyConnections(self.emailId, false);
         }
+       self.isThisUser = ko.computed(function () {
+            return self.emailId === user.emailid;
+        }, self);
     }
   
     // audio code 
     var _callbacks = {
         onReadyForStream: function (connection) {
-            // The connection manager needs our stream
-            // todo: not sure I like this
-            //alert('Adding my stream to remote');
             if (myStream) connection.addStream(myStream);
         },
         onStreamAdded: function (connection, event) {
@@ -254,12 +254,9 @@
                 isUserInList.hasStream(true);
             }
             window.inCall = true;
-            //$("#endCall").show();
-
             return false;
         },
         onStreamRemoved: function (connection, streamId) {
-            //$('#audio_' + connection.parterId).closest('li').css({ background: '#fff' });
             try {
                 debugger
                 var isUserInList;
@@ -286,7 +283,6 @@
 
 
     function checkmediaStream() {
-        //  myStream
         getUserMedia(
             {
                 audio: true
@@ -302,7 +298,6 @@
         if (window.myStream) {
             makeCallbyId(id);
         } else {
-            //  myStream
             getUserMedia(
                 {
                     audio: true
@@ -318,8 +313,6 @@
     function makeCallbyId(id) {
         connectionManager.initiateOffer(id, window.myStream, false, true);
     }
-
-
 
 
 })(window);
