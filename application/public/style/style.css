@@ -133,3 +133,8 @@ body{
 }
 
 }
+@media (min-width: 768px){
+.modal-dialog {
+    margin: 89px auto !important;
+}
+}

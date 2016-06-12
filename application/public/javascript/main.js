@@ -202,9 +202,10 @@ function setParticipantList(userList) {
         self.emailId = userName;
         self.callThis = function(data,event){
            if(self.emailId == user.emailid){
-            event.target.style.backgroundColor =   '#'+Math.floor(Math.random()*16777215).toString(16);
+               var clr = '#'+Math.floor(Math.random()*16777215).toString(16);
+            event.target.style.backgroundColor =   clr
             canvas.freeDrawingBrush.width = Math.floor((Math.random()*10) + 2);
-            canvas.freeDrawingBrush.color =  event.target.style.backgroundColor;
+            canvas.freeDrawingBrush.color =  clr;
                toastr.warning("Your pencil color is changed");
            };
            
