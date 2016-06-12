@@ -16,6 +16,9 @@ html(lang='en')
     script(src='/vendor/toastr.min.js')
     script(src='/vendor/bootstrap.min.js')
   body.overflowhidden
-  
+    nav.navbar.navbar-inverse(style="position: fixed;top: 0;width: 100%;left: 0;")
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='/') Smart Guru
   
   block content

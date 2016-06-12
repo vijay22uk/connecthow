@@ -71,7 +71,7 @@ body{
   transition: left 0.15s ease-in-out;
 }
 .userlist{
-    background: #535251;
+    background: rgb(41, 41, 40);
     padding: 9px 0px 0px 4px;
     width: 320px;
     position: fixed;
@@ -107,4 +107,29 @@ body{
 }
 #yourname{
  color:#0093ff
+}
+.navbar-header {
+        margin-top: 10px;
+}
+.navbar-header , .navbar-brand{
+    float: none !important;
+    color:white !important;
+    text-align: center !important;
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 748px)
+  {
+      .userlist{
+          width: 200px;
+      }
+      
+      .navbar-header , .navbar-brand{
+    float: none !important;
+    color: white !important;
+    text-align: center !important;
+    margin-left: 20px;
+}
+
 }
