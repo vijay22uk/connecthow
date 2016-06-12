@@ -5,21 +5,6 @@ var BandwidthHandler = (function () {
             return sdp;
         }
 
-        if (isScreen) {
-            if (!bandwidth.screen) {
-                console.warn('It seems that you are not using bandwidth for screen. Screen sharing is expected to fail.');
-            } else if (bandwidth.screen < 300) {
-                console.warn('It seems that you are using wrong bandwidth value for screen. Screen sharing is expected to fail.');
-            }
-        }
-
-        // if screen; must use at least 300kbs
-        if (bandwidth.screen && isScreen) {
-            sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
-            sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + bandwidth.screen + '\r\n');
-        }
-
-        // remove existing bandwidth lines
         if (bandwidth.audio || bandwidth.video || bandwidth.data) {
             sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
         }
@@ -104,25 +89,20 @@ var BandwidthHandler = (function () {
 
     function setOpusAttributes(sdp, params) {
         params = params || {};
-
         var sdpLines = sdp.split('\r\n');
-
         // Opus
         var opusIndex = findLine(sdpLines, 'a=rtpmap', 'opus/48000');
         var opusPayload;
         if (opusIndex) {
             opusPayload = getCodecPayloadType(sdpLines[opusIndex]);
         }
-
         if (!opusPayload) {
             return sdp;
         }
-
         var opusFmtpLineIndex = findLine(sdpLines, 'a=fmtp:' + opusPayload.toString());
         if (opusFmtpLineIndex === null) {
             return sdp;
         }
-
         var appendOpusNext = '';
         appendOpusNext += '; stereo=' + (typeof params.stereo != 'undefined' ? params.stereo : '1');
         appendOpusNext += '; sprop-stereo=' + (typeof params['sprop-stereo'] != 'undefined' ? params['sprop-stereo'] : '1');
@@ -186,269 +166,269 @@ WebRTC API has been normalized using 'adapter.js'
 ************************************************/
 WebRtcDemo.ConnectionManager = (function () {
     var _signaler, myConnections = {}
-        _connections = {},
-        _iceServers = [
-                        { url: "stun:global.stun.twilio.com:3478?transport=udp" },
-                        { url: 'stun:stun.l.google.com:19302' },
-                        {
-                            url: 'turn:192.158.29.39:3478?transport=udp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
-                        },
-                        {
-                            url: 'turn:192.158.29.39:3478?transport=tcp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
-                        },
-                        {
-                            url: 'turn:numb.viagenie.ca',
-                            credential: 'muazkh',
-                            username: 'webrtc@live.com'
-                        }], // stun.l.google.com - Firefox does not support DNS names.
-    /* Callbacks */
-        _onReadyForStreamCallback = function () { console.log('UNIMPLEMENTED: _onReadyForStreamCallback'); },
-        _onStreamAddedCallback = function () { console.log('UNIMPLEMENTED: _onStreamAddedCallback'); },
-        _onStreamRemovedCallback = function () { console.log('UNIMPLEMENTED: _onStreamRemovedCallback'); },
-        _onStreamAddedConferenceCallback = function () { console.log('UNIMPLEMENTED: _onStreamAddedConferenceCallback'); },
-        _onStreamRemovedConferenceCallback = function () { console.log('UNIMPLEMENTED: _onStreamRemovedConferenceCallback'); },
-    // Initialize the ConnectionManager with a signaler and callbacks to handle events
-        _initialize = function (signaler, onReadyForStream, onStreamAdded, onStreamRemoved, onStreamAddedConference, onStreamRemovedConference) {
-            _signaler = signaler;
-            _onReadyForStreamCallback = onReadyForStream || _onReadyForStreamCallback;
-            _onStreamAddedCallback = onStreamAdded || _onStreamAddedCallback;
-            _onStreamRemovedCallback = onStreamRemoved || _onStreamRemovedCallback;
-            _onStreamAddedConferenceCallback = onStreamAddedConference || _onStreamAddedConferenceCallback;
-            _onStreamRemovedConferenceCallback = onStreamRemovedConference || _onStreamRemovedConferenceCallback;
-
+    _connections = {},
+    _iceServers = [
+        { url: "stun:global.stun.twilio.com:3478?transport=udp" },
+        { url: 'stun:stun.l.google.com:19302' },
+        {
+            url: 'turn:192.158.29.39:3478?transport=udp',
+            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            username: '28224511:1379330808'
         },
+        {
+            url: 'turn:192.158.29.39:3478?transport=tcp',
+            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            username: '28224511:1379330808'
+        },
+        {
+            url: 'turn:numb.viagenie.ca',
+            credential: 'muazkh',
+            username: 'webrtc@live.com'
+        }], // stun.l.google.com - Firefox does not support DNS names.
+    /* Callbacks */
+    _onReadyForStreamCallback = function () { console.log('UNIMPLEMENTED: _onReadyForStreamCallback'); },
+    _onStreamAddedCallback = function () { console.log('UNIMPLEMENTED: _onStreamAddedCallback'); },
+    _onStreamRemovedCallback = function () { console.log('UNIMPLEMENTED: _onStreamRemovedCallback'); },
+    _onStreamAddedConferenceCallback = function () { console.log('UNIMPLEMENTED: _onStreamAddedConferenceCallback'); },
+    _onStreamRemovedConferenceCallback = function () { console.log('UNIMPLEMENTED: _onStreamRemovedConferenceCallback'); },
+    // Initialize the ConnectionManager with a signaler and callbacks to handle events
+    _initialize = function (signaler, onReadyForStream, onStreamAdded, onStreamRemoved, onStreamAddedConference, onStreamRemovedConference) {
+        _signaler = signaler;
+        _onReadyForStreamCallback = onReadyForStream || _onReadyForStreamCallback;
+        _onStreamAddedCallback = onStreamAdded || _onStreamAddedCallback;
+        _onStreamRemovedCallback = onStreamRemoved || _onStreamRemovedCallback;
+        _onStreamAddedConferenceCallback = onStreamAddedConference || _onStreamAddedConferenceCallback;
+        _onStreamRemovedConferenceCallback = onStreamRemovedConference || _onStreamRemovedConferenceCallback;
+
+    },
     // Create a new WebRTC Peer Connection with the given partner
-        _createConnection = function (partnerClientId, isVideoCall) {
-            var connection = new RTCPeerConnection({ iceServers:  _iceServers }, {
-                optional: [
-                    { DtlsSrtpKeyAgreement: true }
-                ]
-            });
-            connection.parterId = partnerClientId;
-            // ICE Candidate Callback
-            connection.onicecandidate = function (event) {
-                if (event.candidate) {
-                    var sendData = {
-                        room: user.classroom,
-                        emailId: user.emailid,
-                        target: 'audio',
-                        webRtcTarget: connection.parterId,
-                        type: 'candidate',
-                        payload: {
-                            options: {
-                                candidate: JSON.stringify(event.candidate)
-                            }
+    _createConnection = function (partnerClientId, isVideoCall) {
+        var connection = new RTCPeerConnection({ iceServers: _iceServers }, {
+            optional: [
+                { DtlsSrtpKeyAgreement: true }
+            ]
+        });
+        connection.parterId = partnerClientId;
+        // ICE Candidate Callback
+        connection.onicecandidate = function (event) {
+            if (event.candidate) {
+                var sendData = {
+                    room: user.classroom,
+                    emailId: user.emailid,
+                    target: 'audio',
+                    webRtcTarget: connection.parterId,
+                    type: 'candidate',
+                    payload: {
+                        options: {
+                            candidate: JSON.stringify(event.candidate)
                         }
                     }
-                    socket.emit('message', sendData);
-                } else {
-                    // Null candidate means we are done collecting candidates.
                 }
-            };
+                socket.emit('message', sendData);
+            } else {
+                // Null candidate means we are done collecting candidates.
+            }
+        };
 
-            // State changing
-            connection.oniceconnectionstatechange = function () {
+        // State changing
+        connection.oniceconnectionstatechange = function () {
                 
-                // Not doing anything here, but interesting to see the state transitions
-                var states = {
-                    'iceConnectionState': connection.iceConnectionState,
-                    'iceGatheringState': connection.iceGatheringState,
-                    'readyState': connection.readyState,
-                    'signalingState': connection.signalingState
-                };
-                
-                if (states.iceGatheringState === "complete" && states.iceConnectionState === "failed") {
-                    _closeConnection(connection.parterId);
-                    }
+            // Not doing anything here, but interesting to see the state transitions
+            var states = {
+                'iceConnectionState': connection.iceConnectionState,
+                'iceGatheringState': connection.iceGatheringState,
+                'readyState': connection.readyState,
+                'signalingState': connection.signalingState
             };
 
-            // Stream handlers
-            connection.onaddstream = function (event) {
-                // A stream was added, so surface it up to our UI via callback
-                _onStreamAddedCallback(connection, event);
-            };
-            connection.onremovestream = function (event) {
-                // A stream was removed
-                _onStreamRemovedCallback(connection, event.stream.id);
-            };
-            // Store away the connection
-            _connections[partnerClientId] = connection;
+            if (states.iceGatheringState === "complete" && states.iceConnectionState === "failed") {
+                _closeConnection(connection.parterId);
+            }
+        };
 
-            // And return it
-            return connection;
-        },
+        // Stream handlers
+        connection.onaddstream = function (event) {
+            // A stream was added, so surface it up to our UI via callback
+            _onStreamAddedCallback(connection, event);
+        };
+        connection.onremovestream = function (event) {
+            // A stream was removed
+            _onStreamRemovedCallback(connection, event.stream.id);
+        };
+        // Store away the connection
+        _connections[partnerClientId] = connection;
 
-        _createConnectionConference = function (partnerClientId, conferenceId) {
-            // Create a new PeerConnection
-            var connection = new RTCPeerConnection({ iceServers: iceServerList });
-            // ICE Candidate Callback
-            connection.onicecandidate = function (event) {
-                if (event.candidate) {
-                    // Found a new candidate
-                } else {
-                    // Null candidate means we are done collecting candidates.
-                    //console.log('WebRTC: ICE candidate gathering complete');
-                }
-            };
+        // And return it
+        return connection;
+    },
 
-            // State changing
-            connection.onstatechange = function () {
-                // Not doing anything here, but interesting to see the state transitions
-                var states = {
-                    'iceConnectionState': connection.iceConnectionState,
-                    'iceGatheringState': connection.iceGatheringState,
-                    'readyState': connection.readyState,
-                    'signalingState': connection.signalingState
-                };
+    _createConnectionConference = function (partnerClientId, conferenceId) {
+        // Create a new PeerConnection
+        var connection = new RTCPeerConnection({ iceServers: iceServerList });
+        // ICE Candidate Callback
+        connection.onicecandidate = function (event) {
+            if (event.candidate) {
+                // Found a new candidate
+            } else {
+                // Null candidate means we are done collecting candidates.
+                //console.log('WebRTC: ICE candidate gathering complete');
+            }
+        };
 
-            };
-
-            // Stream handlers
-            connection.onaddstream = function (event) {
-                //console.log('WebRTC: adding stream');
-                // A stream was added, so surface it up to our UI via callback
-                _onStreamAddedConferenceCallback(connection, partnerClientId, event);
+        // State changing
+        connection.onstatechange = function () {
+            // Not doing anything here, but interesting to see the state transitions
+            var states = {
+                'iceConnectionState': connection.iceConnectionState,
+                'iceGatheringState': connection.iceGatheringState,
+                'readyState': connection.readyState,
+                'signalingState': connection.signalingState
             };
 
-            connection.onremovestream = function (event) {
-                //console.log('WebRTC: removing stream');
-                // A stream was removed
-                _onStreamRemovedConferenceCallback(connection, partnerClientId, event.stream.id);
-            };
+        };
 
-            // Store away the connection
-            _connections[conferenceId][partnerClientId] = connection;
+        // Stream handlers
+        connection.onaddstream = function (event) {
+            //console.log('WebRTC: adding stream');
+            // A stream was added, so surface it up to our UI via callback
+            _onStreamAddedConferenceCallback(connection, partnerClientId, event);
+        };
 
-            // And return it
-            return connection;
-        },
+        connection.onremovestream = function (event) {
+            //console.log('WebRTC: removing stream');
+            // A stream was removed
+            _onStreamRemovedConferenceCallback(connection, partnerClientId, event.stream.id);
+        };
+
+        // Store away the connection
+        _connections[conferenceId][partnerClientId] = connection;
+
+        // And return it
+        return connection;
+    },
 
     // Process a newly received SDP signal
-        _receivedSdpSignal = function (connection, partnerClientId, sdp, isVideoCall) {
-             console.log('new signal *******************************');
+    _receivedSdpSignal = function (connection, partnerClientId, sdp, isVideoCall) {
+        console.log('new signal *******************************');
 
-            connection.setRemoteDescription(new RTCSessionDescription(sdp), function () {
-                if (connection.remoteDescription.type == "offer") {
-                    console.log('WebRTC: received offer, sending response...');
-                    _onReadyForStreamCallback(connection);
-                    connection.createAnswer(function (desc) {
-                        console.log('WebRTC: createAnswer');
-                        //desc.sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
-                        // desc.sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\n b=AS:40\r\n');
-                        // desc.sdp.replace('/48000/', '/8000/');
-                        desc.sdp = preferBitRate(desc.sdp, 20, "audio");
-                        desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
-                            'stereo': 0, // to disable stereo (to force mono audio)
-                            'sprop-stereo': 0,
-                            'maxaveragebitrate': 12000, // 500 kbits
-                            'maxplaybackrate': 8000, // 500 kbits
-                            'cbr': 0, // disable cbr
-                            'useinbandfec': 1, // use inband fec
-                            'usedtx': 0, // use dtx
-                            'maxptime': 30,
-                            'sprop-maxcapturerate': 8000
-                        });
-                        connection.setLocalDescription(desc, function () {
-console.log('WebRTC: setLocalDescription');
-                            var sendData = {
-                               room: user.classroom,
-                               emailId: user.emailid,
-                                target: 'audio',
-                                type: 'answerSDP',
-                                webRtcTarget: connection.parterId,
-                                payload: {
-                                    options: {
-                                        SDP: JSON.stringify(connection.localDescription)
-                                    }
+        connection.setRemoteDescription(new RTCSessionDescription(sdp), function () {
+            if (connection.remoteDescription.type == "offer") {
+                console.log('WebRTC: received offer, sending response...');
+                _onReadyForStreamCallback(connection);
+                connection.createAnswer(function (desc) {
+                    console.log('WebRTC: createAnswer');
+                    //desc.sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
+                    // desc.sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\n b=AS:40\r\n');
+                    // desc.sdp.replace('/48000/', '/8000/');
+                    desc.sdp = preferBitRate(desc.sdp, 20, "audio");
+                    desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
+                        'stereo': 0, // to disable stereo (to force mono audio)
+                        'sprop-stereo': 0,
+                        'maxaveragebitrate': 12000, // 500 kbits
+                        'maxplaybackrate': 8000, // 500 kbits
+                        'cbr': 0, // disable cbr
+                        'useinbandfec': 1, // use inband fec
+                        'usedtx': 0, // use dtx
+                        'maxptime': 30,
+                        'sprop-maxcapturerate': 8000
+                    });
+                    connection.setLocalDescription(desc, function () {
+
+                        var sendData = {
+                            room: user.classroom,
+                            emailId: user.emailid,
+                            target: 'audio',
+                            type: 'answerSDP',
+                            webRtcTarget: connection.parterId,
+                            payload: {
+                                options: {
+                                    SDP: JSON.stringify(connection.localDescription)
                                 }
                             }
-                            socket.emit('message', sendData);
-                        }, function (err) {
-                            console.error(err);
-                        });
+                        }
+                        socket.emit('message', sendData);
                     }, function (err) {
                         console.error(err);
                     });
-                } else if (connection.remoteDescription.type == "answer") {
-                }
-            }, function (err) {
-                console.log(err);
-            });
-        },
-    // Process a newly received SDP signal
-        _receivedSdpSignalConference = function (connection, partnerClientId, sdp) {
-            var room = partnerClientId;
-            var remoteDesc = new RTCSessionDescription(sdp);
-            connection.setRemoteDescription(remoteDesc, function () {
-                if (connection.remoteDescription.type == "offer") {
-                    // _onReadyForStreamCallback(connection);
-                    connection.createAnswer(function (desc) {
-                        connection.setLocalDescription(desc, function () {
-              
-                        });
-                    });
-                } else if (connection.remoteDescription.type == "answer") {
-                }
-            }, function (e) {
-                alert(e)
-
-            });
-        },
-    // Hand off a new signal from the signaler to the connection
-        _newSignal = function (partnerClientId, data, isVideoCall,force) {
-
-            var signal = data,
-                connection = _getConnection(partnerClientId, isVideoCall);
-
-            // Route signal based on type
-            if (signal.SDP) {
-                _receivedSdpSignal(connection, partnerClientId, JSON.parse(signal.SDP), isVideoCall);
-            } else if (signal.candidate) {
-                _receivedCandidateSignal(connection, partnerClientId, JSON.parse(signal.candidate));
-            }
-        },
-          _newSignalConference = function (partnerClientId, data, conferenceId) {
-              console.log("why here");
-              //var signal = data,
-              //  connection = _getConnectionConference(partnerClientId, conferenceId);
-
-              //// Route signal based on type
-              //if (signal.SDP) {
-              //    _receivedSdpSignalConference(connection, partnerClientId, signal.SDP);
-              //} else if (signal.candidate) {
-              //    _receivedCandidateSignal(connection, partnerClientId, signal.candidate);
-              //}
-          },
-    // Process a newly received Candidate signal
-        _receivedCandidateSignal = function (connection, partnerClientId, candidate) {
-            // var candidate = JSON.parse(candidate);
-
-            if (connection && candidate) {
-                var _candidate = new RTCIceCandidate({
-                    sdpMid: candidate.sdpMid,
-                    sdpMLineIndex: candidate.sdpMLineIndex,
-                    candidate: candidate.candidate
+                }, function (err) {
+                    console.error(err);
                 });
+            } else if (connection.remoteDescription.type == "answer") {
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    },
+    // Process a newly received SDP signal
+    _receivedSdpSignalConference = function (connection, partnerClientId, sdp) {
+        var room = partnerClientId;
+        var remoteDesc = new RTCSessionDescription(sdp);
+        connection.setRemoteDescription(remoteDesc, function () {
+            if (connection.remoteDescription.type == "offer") {
+                // _onReadyForStreamCallback(connection);
+                connection.createAnswer(function (desc) {
+                    connection.setLocalDescription(desc, function () {
 
-                //var iceCandidate = new RTCIceCandidate(candidate);
-                if (_candidate) {
-                    try {
-                        connection.addIceCandidate(_candidate);
-                    } catch (e) {
-                        //console.log(e);
-                    }
+                    });
+                });
+            } else if (connection.remoteDescription.type == "answer") {
+            }
+        }, function (e) {
+            alert(e)
+
+        });
+    },
+    // Hand off a new signal from the signaler to the connection
+    _newSignal = function (partnerClientId, data, isVideoCall, force) {
+
+        var signal = data,
+            connection = _getConnection(partnerClientId, isVideoCall);
+
+        // Route signal based on type
+        if (signal.SDP) {
+            _receivedSdpSignal(connection, partnerClientId, JSON.parse(signal.SDP), isVideoCall);
+        } else if (signal.candidate) {
+            _receivedCandidateSignal(connection, partnerClientId, JSON.parse(signal.candidate));
+        }
+    },
+    _newSignalConference = function (partnerClientId, data, conferenceId) {
+        console.log("why here");
+        //var signal = data,
+        //  connection = _getConnectionConference(partnerClientId, conferenceId);
+
+        //// Route signal based on type
+        //if (signal.SDP) {
+        //    _receivedSdpSignalConference(connection, partnerClientId, signal.SDP);
+        //} else if (signal.candidate) {
+        //    _receivedCandidateSignal(connection, partnerClientId, signal.candidate);
+        //}
+    },
+    // Process a newly received Candidate signal
+    _receivedCandidateSignal = function (connection, partnerClientId, candidate) {
+        // var candidate = JSON.parse(candidate);
+
+        if (connection && candidate) {
+            var _candidate = new RTCIceCandidate({
+                sdpMid: candidate.sdpMid,
+                sdpMLineIndex: candidate.sdpMLineIndex,
+                candidate: candidate.candidate
+            });
+
+            //var iceCandidate = new RTCIceCandidate(candidate);
+            if (_candidate) {
+                try {
+                    connection.addIceCandidate(_candidate);
+                } catch (e) {
+                    //console.log(e);
                 }
             }
-        },
+        }
+    },
     // Retreive an existing or new connection for a given partner
-        _getConnection = function (partnerClientId, isVideoCall) {
-            var connection = _connections[partnerClientId] || _createConnection(partnerClientId, isVideoCall);
-            return _connections[partnerClientId];
-        },
+    _getConnection = function (partnerClientId, isVideoCall) {
+        var connection = _connections[partnerClientId] || _createConnection(partnerClientId, isVideoCall);
+        return _connections[partnerClientId];
+    },
 
     _getThisConnection = function (partnerClientId) {
         var thisConnection = myConnections[partnerClientId] || _creteNewCaller(partnerClientId);
@@ -461,24 +441,24 @@ console.log('WebRTC: setLocalDescription');
         return thisCaller;
     },
 
-        _getConnectionConference = function (partnerClientId, conferenceId) {
-            var conference = _connections[conferenceId] || _createConference(conferenceId);
-            var connection = conference[partnerClientId] || _createConnectionConference(partnerClientId, conferenceId);
-            return connection;
-        },
-        _createConference = function (conferenceId) {
-            _connections[conferenceId] = {};
-            return _connections[conferenceId];
-        },
-        _endConference = function (conferenceId) {
-            delete _connections[conferenceId];
-        },
-           _removeConnection = function (conferenceId) {
-               _connections[conferenceId] && _connections[conferenceId].close();
-               delete _connections[conferenceId];
-           },
+    _getConnectionConference = function (partnerClientId, conferenceId) {
+        var conference = _connections[conferenceId] || _createConference(conferenceId);
+        var connection = conference[partnerClientId] || _createConnectionConference(partnerClientId, conferenceId);
+        return connection;
+    },
+    _createConference = function (conferenceId) {
+        _connections[conferenceId] = {};
+        return _connections[conferenceId];
+    },
+    _endConference = function (conferenceId) {
+        delete _connections[conferenceId];
+    },
+    _removeConnection = function (conferenceId) {
+        _connections[conferenceId] && _connections[conferenceId].close();
+        delete _connections[conferenceId];
+    },
 
-    _deleteMyConnections = function (connectionId,all) {
+    _deleteMyConnections = function (connectionId, all) {
         delete myConnections[connectionId];
         if (all) {
             myConnections = {};
@@ -486,113 +466,113 @@ console.log('WebRTC: setLocalDescription');
 
     }
     // Close all of our connections
-        _closeAllConnections = function () {
-            myConnections = {};
-            for (var connectionId in _connections) {
-                _closeConnection(connectionId);
-            }
-            _deleteMyConnections();
-        },
-        _closeAllConnectionsConference = function (conferenceId) {
-            for (var connectionId in _connections[conferenceId]) {
-                _closeConnectionConference(conferenceId, connectionId);
-            }
-            delete _connections[conferenceId];
-        },
-        _closeConnectionConference = function (conferenceId, partnerClientId) {
-            var connection = _connections[conferenceId][partnerClientId];
+    _closeAllConnections = function () {
+        myConnections = {};
+        for (var connectionId in _connections) {
+            _closeConnection(connectionId);
+        }
+        _deleteMyConnections();
+    },
+    _closeAllConnectionsConference = function (conferenceId) {
+        for (var connectionId in _connections[conferenceId]) {
+            _closeConnectionConference(conferenceId, connectionId);
+        }
+        delete _connections[conferenceId];
+    },
+    _closeConnectionConference = function (conferenceId, partnerClientId) {
+        var connection = _connections[conferenceId][partnerClientId];
 
-            if (connection) {
-                // Let the user know which streams are leaving
-                // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
-                _onStreamRemovedConferenceCallback(null, partnerClientId, null);
-                // Close the connection
-                connection.close();
-                delete _connections[conferenceId][partnerClientId]; // Remove the property
-            }
-        },
+        if (connection) {
+            // Let the user know which streams are leaving
+            // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
+            _onStreamRemovedConferenceCallback(null, partnerClientId, null);
+            // Close the connection
+            connection.close();
+            delete _connections[conferenceId][partnerClientId]; // Remove the property
+        }
+    },
 
     // Close the connection between myself and the given partner
-        _closeConnection = function (partnerClientId) {
-            var connection = _connections[partnerClientId];
-            if (connection) {
-                // Let the user know which streams are leaving
-                // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
-                _onStreamRemovedCallback(connection, null);
-                debugger
-                // Close the connection
-                connection.close();
-                delete _connections[partnerClientId]; // Remove the property
-            }
-        },
+    _closeConnection = function (partnerClientId) {
+        var connection = _connections[partnerClientId];
+        if (connection) {
+            // Let the user know which streams are leaving
+            // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
+            _onStreamRemovedCallback(connection, null);
+            debugger
+            // Close the connection
+            connection.close();
+            delete _connections[partnerClientId]; // Remove the property
+        }
+    },
     // Send an offer for audio/video
-        _initiateOffer = function (partnerClientId, stream, isVideoCall,force) {
-            // Get a connection for the given partner
-            var connection = _getConnection(partnerClientId, isVideoCall);
-            var room = partnerClientId;
-            var thisCaller = _getThisConnection(partnerClientId);
-            thisCaller.callingCount++;
-            // Add our audio/video stream
-            var mystream = stream;
-            if (mystream && connection.getLocalStreams().length < 1) {
-                //connection.removeStream(stream);
-                connection.addStream(stream);
-            }
-            // Send an offer for a connection
-            connection.createOffer(function (desc) {
-                //desc.sdp = desc.sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\nb=AS:40\r\n');
-                //desc.sdp = desc.sdp.replace('/48000/', '/8000/');
-                //desc.sdp = modifySdp(desc.sdp);
-                desc.sdp = preferBitRate(desc.sdp, 20, "audio");
-                desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
-                    'stereo': 0, // to disable stereo (to force mono audio)
-                    'sprop-stereo': 0,
-                    'maxaveragebitrate': 12000, // 500 kbits
-                    'maxplaybackrate': 8000, // 500 kbits
-                    'cbr': 0, // disable cbr
-                    'useinbandfec': 1, // use inband fec
-                    'usedtx': 0, // use dtx
-                    'maxptime': 30,
-                    'sprop-maxcapturerate': 8000
-                });
-                //desc.sdp = preferBitRate(desc.sdp, 40, "audio")
-                connection.setLocalDescription(desc, function () {
-                    // audio bandwidth 50 kilobits per second
-                    var sendData = {
-                        room: user.classroom,
-                        emailId: user.emailid,
-                        target: 'audio',
-                        type: 'offerSDP',
-                        webRtcTarget: connection.parterId,
-                        force:force,
-                        payload: {
-                            options: {
-                                SDP: JSON.stringify(connection.localDescription)
-                            }
+    _initiateOffer = function (partnerClientId, stream, isVideoCall, force) {
+        // Get a connection for the given partner
+        var connection = _getConnection(partnerClientId, isVideoCall);
+        var room = partnerClientId;
+        var thisCaller = _getThisConnection(partnerClientId);
+        thisCaller.callingCount++;
+        // Add our audio/video stream
+        var mystream = stream;
+        if (mystream && connection.getLocalStreams().length < 1) {
+            //connection.removeStream(stream);
+            connection.addStream(stream);
+        }
+        // Send an offer for a connection
+        connection.createOffer(function (desc) {
+            //desc.sdp = desc.sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\nb=AS:40\r\n');
+            //desc.sdp = desc.sdp.replace('/48000/', '/8000/');
+            //desc.sdp = modifySdp(desc.sdp);
+            desc.sdp = preferBitRate(desc.sdp, 20, "audio");
+            desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
+                'stereo': 0, // to disable stereo (to force mono audio)
+                'sprop-stereo': 0,
+                'maxaveragebitrate': 12000, // 500 kbits
+                'maxplaybackrate': 8000, // 500 kbits
+                'cbr': 0, // disable cbr
+                'useinbandfec': 1, // use inband fec
+                'usedtx': 0, // use dtx
+                'maxptime': 30,
+                'sprop-maxcapturerate': 8000
+            });
+            //desc.sdp = preferBitRate(desc.sdp, 40, "audio")
+            connection.setLocalDescription(desc, function () {
+                // audio bandwidth 50 kilobits per second
+                var sendData = {
+                    room: user.classroom,
+                    emailId: user.emailid,
+                    target: 'audio',
+                    type: 'offerSDP',
+                    webRtcTarget: connection.parterId,
+                    force: force,
+                    payload: {
+                        options: {
+                            SDP: JSON.stringify(connection.localDescription)
                         }
                     }
-                    socket.emit('message', sendData);
-                }, function (err) {
-                    console.log(err);
-                });
+                }
+                socket.emit('message', sendData);
             }, function (err) {
-
-                console.error(err);
+                console.log(err);
             });
-        },
+        }, function (err) {
+
+            console.error(err);
+        });
+    },
     // Send an offer for audio/video
 
-        _initiateConferenceOffer = function (partnerClientId, stream, conferenceId) {
-            // Get a connection for the given partner
-            var connection = _getConnectionConference(partnerClientId, conferenceId);
-            // Add our audio/video stream
-            connection.addStream(stream);
-            // Send an offer for a connection
-            connection.createOffer(function (desc) {
-                connection.setLocalDescription(desc, function () {
-                });
+    _initiateConferenceOffer = function (partnerClientId, stream, conferenceId) {
+        // Get a connection for the given partner
+        var connection = _getConnectionConference(partnerClientId, conferenceId);
+        // Add our audio/video stream
+        connection.addStream(stream);
+        // Send an offer for a connection
+        connection.createOffer(function (desc) {
+            connection.setLocalDescription(desc, function () {
             });
-        }
+        });
+    }
 
     function modifySdp(sdp) {
         //sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');

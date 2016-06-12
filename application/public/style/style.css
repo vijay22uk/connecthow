@@ -138,3 +138,7 @@ body{
     margin: 89px auto !important;
 }
 }
+
+.disableAll{
+    pointer-events: none;
+}
