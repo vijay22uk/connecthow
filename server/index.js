@@ -17,7 +17,8 @@
         key: fs.readFileSync('server/cert/private.pem'),
         cert: fs.readFileSync('server/cert/public.pem')
     };
-    var http = require('https').Server(options, app);
+   // var http = require('https').Server(options, app); // https
+    var http = require('http').Server(app); // http
     var io = require('socket.io')(http);
     app.use(express.static('./application/public'));
     app.get('/', function (req, res) {

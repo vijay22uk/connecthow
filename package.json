@@ -1,5 +1,5 @@
 {
-  "name": "connecthow - Smart Guru Ji",
+  "name": "ConnecthowSmartGuruJi",
   "version": "1.0.0",
   "description": "connect and learn with canvas and audio !!",
   "main": "./server/index.js",
