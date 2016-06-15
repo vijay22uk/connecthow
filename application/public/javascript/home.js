@@ -1,5 +1,7 @@
 
 $(document).ready(function () {
+	$('body').removeClass("isloading");
+	$(".loader").fadeOut("slow");
 	$('body').addClass('home');
 	$('form').submit(function () {
 		var email = $('#email').val();

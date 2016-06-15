@@ -16,7 +16,8 @@ html(lang='en')
     script(src='/vendor/jquery-1.11.1.min.js')
     script(src='/vendor/toastr.min.js')
     script(src='/vendor/bootstrap.min.js')
-  body.overflowhidden
+  body.overflowhidden.isloading
+    .loader
     nav.navbar.navbar-inverse(style="position: fixed;top: 0;width: 100%;left: 0;z-index: 1;")
       .container-fluid
         .navbar-header

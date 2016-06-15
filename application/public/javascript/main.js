@@ -5,6 +5,8 @@
     var connectionManager = WebRtcDemo.ConnectionManager;
     $(document).ready(documentReadyCallback);
     function documentReadyCallback() {
+        $('body').removeClass("isloading");
+	    $(".loader").fadeOut("slow");
         toastr.options.progressBar = true;
         var canvas = document.getElementById(canvasId);
         canvas.width = window.innerWidth;
