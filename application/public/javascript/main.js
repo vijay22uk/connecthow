@@ -78,6 +78,11 @@
                     toastr.success(message.emailId + " has left the classroom");
                     removeUser(message.emailId);
                     break;
+
+                    case "disconnectCall":
+                    if(message.targetUserId ===user.emailid)
+                  connectionManager.closeConnection(message.emailId);
+                    break;
                 default:
                     break;
 
@@ -227,15 +232,17 @@
             makeCall(self.userName);
 
         },
-        self.disconnectThat = function () {
-            connectionManager.closeConnection(self.emailId);
-            connectionManager.deleteMyConnections(self.emailId, false);
-        }
-       self.isThisUser = ko.computed(function () {
+            self.disconnectThat = function () {
+                connectionManager.closeConnection(self.emailId);
+                // as iCE taking time in discovering disconnecct
+                sendDisconnect(self.emailId);
+                connectionManager.deleteMyConnections(self.emailId, false);
+            }
+        self.isThisUser = ko.computed(function () {
             return self.emailId === user.emailid;
         }, self);
     }
-  
+
     // audio code 
     var _callbacks = {
         onReadyForStream: function (connection) {
@@ -313,6 +320,15 @@
     function makeCallbyId(id) {
         connectionManager.initiateOffer(id, window.myStream, false, true);
     }
+    function sendDisconnect(id) {
+        var sendData = {
+            room: user.classroom,
+            emailId: user.emailid,
+            target: 'disconnectCall',
+            targetUserId: id
+        }
+        socket.emit('message', sendData);
 
+    }
 
 })(window);
