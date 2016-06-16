@@ -74,7 +74,8 @@
                     break;
                 case "join":
                     toastr.success(message.emailId + " has entered the classroom");
-                    setParticipantList([{ emailId: message.emailId }])
+                    setParticipantList([{ emailId: message.emailId }]);
+                    clearCanvasNow();
                     break;
                 case "leave":
                     toastr.success(message.emailId + " has left the classroom");
@@ -111,6 +112,9 @@
         switch (message.type) {
             case "path":
                 addpathCanvas(message);
+                break;
+                case "clearAll":
+                clearCanvasNow();
                 break;
             default:
                 break;
@@ -184,6 +188,9 @@
         canvas.add(path);
 
     }
+    function clearCanvasNow(){
+        canvas.clear();
+    }
     // socket join 
     function joinRoom(room) {
 
@@ -222,6 +229,16 @@
         self.hasStream = ko.observable(false);
         self.userName = userName;
         self.emailId = userName;
+        self.clearAll = function(){
+         var sendData = {
+            room: user.classroom,
+            emailId: "!!all",
+            target: 'canvas',
+            type:"clearAll",
+        }
+        socket.emit('message', sendData);  
+        clearCanvasNow();
+        }
         self.callThisEraser = function(){
             canvas.freeDrawingBrush.width = 18;
             canvas.freeDrawingBrush.color = "white";

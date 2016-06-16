@@ -17,6 +17,7 @@ block content
           ul.list-group(data-bind="foreach: participants")
             li.list-group-item( data-bind="css: { thisuser: isThisUser() }")
               span(data-bind="text: userName")
+              span.onlinethis(data-bind="visible: isThisUser(), click : clearAll()",data-toggle='tooltip', title="clear All")
               span.onlinethis-eraser.fa.fa-eraser(data-bind="visible: isThisUser(), click : callThisEraser",data-toggle='tooltip', title="Eraser")
               span.onlinethis(data-bind="visible: isThisUser(), click : callThis",data-toggle='tooltip', title="change pencil color")
               span.online.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
