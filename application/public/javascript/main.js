@@ -5,8 +5,12 @@
     var connectionManager = WebRtcDemo.ConnectionManager;
     $(document).ready(documentReadyCallback);
     function documentReadyCallback() {
+        $('.tool-select').on('click', function () {
+            $('.tool-select').removeClass("active-tool");
+            $(this).addClass("active-tool");
+        });
         $('body').removeClass("isloading");
-	    $(".loader").fadeOut("slow");
+        $(".loader").fadeOut("slow");
         toastr.options.progressBar = true;
         var canvas = document.getElementById(canvasId);
         canvas.width = $('#canvascontainer').innerWidth(); //window.innerWidth;
@@ -82,9 +86,9 @@
                     removeUser(message.emailId);
                     break;
 
-                    case "disconnectCall":
-                    if(message.targetUserId ===user.emailid)
-                  connectionManager.closeConnection(message.emailId);
+                case "disconnectCall":
+                    if (message.targetUserId === user.emailid)
+                        connectionManager.closeConnection(message.emailId);
                     break;
                 default:
                     break;
@@ -113,7 +117,7 @@
             case "path":
                 addpathCanvas(message);
                 break;
-                case "clearAll":
+            case "clearAll":
                 clearCanvasNow();
                 break;
             default:
@@ -142,7 +146,7 @@
             perPixelTargetFind: true,
             targetFindTolerance: 5,
         });
-        canvas.freeDrawingBrush.width =4;
+        canvas.freeDrawingBrush.width = 4;
         attachCanvasCallbacks(canvas)
         canvas.isDrawingMode = true;
         //canvas.freeDrawingBrush.width = 5;
@@ -188,7 +192,7 @@
         canvas.add(path);
 
     }
-    function clearCanvasNow(){
+    function clearCanvasNow() {
         canvas.clear();
     }
     // socket join 
@@ -229,26 +233,26 @@
         self.hasStream = ko.observable(false);
         self.userName = userName;
         self.emailId = userName;
-        self.clearAll = function(){
-         var sendData = {
-            room: user.classroom,
-            emailId: "!!all",
-            target: 'canvas',
-            type:"clearAll",
+        self.clearAll = function () {
+            var sendData = {
+                room: user.classroom,
+                emailId: "!!all",
+                target: 'canvas',
+                type: "clearAll",
+            }
+            socket.emit('message', sendData);
+            clearCanvasNow();
         }
-        socket.emit('message', sendData);  
-        clearCanvasNow();
-        }
-        self.callThisEraser = function(){
+        self.callThisEraser = function () {
             canvas.freeDrawingBrush.width = 18;
             canvas.freeDrawingBrush.color = "white";
         };
         self.callThis = function (data, event) {
             if (self.emailId == user.emailid) {
-                
-               // canvas.freeDrawingBrush.width = Math.floor((Math.random() * 10) + 2);
-               // canvas.freeDrawingBrush.color = clr;
-               // toastr.warning("Your pencil color is changed");
+
+                // canvas.freeDrawingBrush.width = Math.floor((Math.random() * 10) + 2);
+                // canvas.freeDrawingBrush.color = clr;
+                // toastr.warning("Your pencil color is changed");
             };
 
             makeCall(self.userName);
@@ -353,54 +357,54 @@
 
     }
     // tool events
-function redPencil(){
-canvas.freeDrawingBrush.width = 4;
-canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
-canvas.freeDrawingBrush.color = "red";
-}
-function greenPencil(){
-canvas.freeDrawingBrush.width = 4;
-canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
-canvas.freeDrawingBrush.color = "green";
-}
-function bluePencil(){
-canvas.freeDrawingBrush.width = 4;
-canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
-canvas.freeDrawingBrush.color = "blue";
-}
-function blackPencil(){
-canvas.freeDrawingBrush.width = 4;
-canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
-canvas.freeDrawingBrush.color = "blue";
-}
+    function redPencil() {
+        canvas.freeDrawingBrush.width = 4;
+        canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+        canvas.freeDrawingBrush.color = "red";
+    }
+    function greenPencil() {
+        canvas.freeDrawingBrush.width = 4;
+        canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+        canvas.freeDrawingBrush.color = "green";
+    }
+    function bluePencil() {
+        canvas.freeDrawingBrush.width = 4;
+        canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+        canvas.freeDrawingBrush.color = "blue";
+    }
+    function blackPencil() {
+        canvas.freeDrawingBrush.width = 4;
+        canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+        canvas.freeDrawingBrush.color = "black";
+    }
 
-function toggleUsers(){
-$('.userlist').toggle();
-}
+    function toggleUsers() {
+        $('.userlist').toggle();
+    }
 
 
 
-    function clearAll(){
+    function clearAll() {
         var sendData = {
             room: user.classroom,
             emailId: "!!all",
             target: 'canvas',
-            type:"clearAll",
+            type: "clearAll",
         }
-        socket.emit('message', sendData);  
+        socket.emit('message', sendData);
         clearCanvasNow();
     }
-    function eraserMode(){
-        canvas.freeDrawingBrush.width = 10;
+    function eraserMode() {
+        canvas.freeDrawingBrush.width = 12;
         canvas.freeDrawingBrush.color = "white";
         canvas.freeDrawingCursor = "url('/icons/eraser.png') 8 8,auto";
     }
-// exporting globals    
-window.clearAll = clearAll;
-window.eraserMode = eraserMode;
-window.redPencil = redPencil;
-window.bluePencil = bluePencil;
-window.greenPencil = greenPencil;
-window.blackPencil =blackPencil; 
-window.toggleUsers  =toggleUsers ;
+    // exporting globals    
+    window.clearAll = clearAll;
+    window.eraserMode = eraserMode;
+    window.redPencil = redPencil;
+    window.bluePencil = bluePencil;
+    window.greenPencil = greenPencil;
+    window.blackPencil = blackPencil;
+    window.toggleUsers = toggleUsers;
 })(window);

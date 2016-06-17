@@ -271,3 +271,7 @@ body {
         display: inline-block;
     }
 }
+
+.active-tool{
+        border-bottom: 2px solid #62a4f7;
+}
