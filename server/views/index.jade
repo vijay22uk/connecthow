@@ -1,21 +1,18 @@
 extends layout
 
 block content
-    #welcome-modal.modal.fade.in(tabindex='-1', role='dialog',data-keyboard= 'false', data-backdrop= 'static',style="display:block")
-      .modal-dialog
-        .modal-content.modal-cont
-          .modal-header
-            h4.modal-title.text-center Welcome to Smart GURU 
-          .modal-body
-            .row
-              form.col-sm-5()
-                .container-fluid
-                    div.form-group
-                      | Email
-                      input#email.form-control(type="email" ,name="emailid" placeholder="Email" required ="required")
-                    div.form-group
-                      Class Room
-                      input#classroom.form-control(type="text" ,name="classroom" placeholder="class room", required ="required")
-                    div
-                      input.btn.btn-primary(type="submit" value="Enter class room")
+    .login_screen
+    .login-form
+        .form-inner
+            .text-vertical-center
+                .login
+                    h1.text-center Smart Guru
+                    .login-box.col-md-12
+                        form
+                            .form-group
+                            input#email.form-control.form-input(type="email" ,name="emailid" placeholder="Email" required ="required")
+                            .form-group
+                            input#classroom.form-control.form-input(type="text" ,name="classroom" placeholder="class room", required ="required")
+                            .form-group
+                            input.btn.btn-primary.button_login(type="submit" value="Enter class room")
     | <script src='/javascript/home.js'></script>

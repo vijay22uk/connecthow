@@ -3,11 +3,12 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
     meta(name='description', content='')
     meta(name='author', content='')
     title Smart GURU 
     link(href='/style/bootstrap.min.css', rel='stylesheet')
+    link(href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic', rel='stylesheet')
     link(href='/style/font-awesome.min.css', rel='stylesheet')
     link(href='/style/style.css', rel='stylesheet')
     link(href='/style/toastr.min.css' , rel='stylesheet')
@@ -16,11 +17,6 @@ html(lang='en')
     script(src='/vendor/jquery-1.11.1.min.js')
     script(src='/vendor/toastr.min.js')
     script(src='/vendor/bootstrap.min.js')
-  body.overflowhidden.isloading
+  body.isloading
     .loader
-    nav.navbar.navbar-inverse(style="position: fixed;top: 0;width: 100%;left: 0;z-index: 1;")
-      .container-fluid
-        .navbar-header
-          a.navbar-brand(href='/') Smart Guru
-  
   block content

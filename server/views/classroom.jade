@@ -1,29 +1,39 @@
 extends layout
 
 block content
-    .container-fluid.fullheight.main-layout
-      #mainlayout
-        #canvascontainer
-          canvas#canvasuiele(resize="true" width="1280" height="720")
-    .userlist
-      .div
-        .div
-          h3
-            span
-            | Class Room : 
-            span(data-bind="text: classRoom")
-          h4 
-            span#yourname
-          ul.list-group(data-bind="foreach: participants")
-            li.list-group-item( data-bind="css: { thisuser: isThisUser() }")
-              span(data-bind="text: userName")
-              span.onlinethis(data-bind="visible: isThisUser()",data-toggle='tooltip', title="clear All" , onclick="clearAll()")
-                img.img-responsive(src="/icons/trash.png")
-              span.onlinethis-eraser.fa.fa-eraser(data-bind="visible: isThisUser()",data-toggle='tooltip',onclick="eraserMode()" title="Eraser")
-              span.onlinethis(data-bind="visible: isThisUser(), click : callThis",data-toggle='tooltip', title="change pencil color")
-              span.online.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
-              span.online-call.caller-switch.fa.fa-phone(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
-              audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + userName}")
+    .main-layout
+        h1.text-center Smart Guru
+        .userlist
+            h3.col-md-12
+                | Class Room : 
+                span(data-bind="text: classRoom")
+            ul.col-md-12(data-bind="foreach: participants")
+                li(data-bind="css: { thisuser: isThisUser() }")
+                    span(data-bind="text: userName")              
+                    span.call-on.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
+                    span.call-off.caller-switch.fa.fa-phone(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
+                    audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + userName}")
+        ul.tool-box
+            li
+                span.onlinethis(data-toggle='tooltip', title="clear All" , onclick="clearAll()")
+                    i.fa.fa-file-o
+            li
+                span.onlinethis-eraser(data-toggle='tooltip',onclick="eraserMode()" title="Eraser")
+                    i.fa.fa-eraser
+            li
+                span.onlinethis.red(data-toggle='tooltip', title="change pencil red")  
+            li
+                span.onlinethis.green(data-toggle='tooltip', title="change pencil green")
+            li
+                span.onlinethis.blue(data-toggle='tooltip', title="change pencil blue")
+            li
+                span.onlinethis.black(data-toggle='tooltip', title="change pencil black")  
+            li.students
+                span(data-toggle='tooltip', title="clear All" , onclick="clearAll()")
+                    i.fa.fa-users         
+        #mainlayout
+            #canvascontainer
+                canvas#canvasuiele(resize="true" width="1280" height="720")  
     script.
      window.user = {};
      window.user.emailid = "#{emailid}";

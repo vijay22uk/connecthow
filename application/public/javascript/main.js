@@ -9,8 +9,8 @@
 	    $(".loader").fadeOut("slow");
         toastr.options.progressBar = true;
         var canvas = document.getElementById(canvasId);
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = $('#canvascontainer').innerWidth(); //window.innerWidth;
+        canvas.height = $('#canvascontainer').innerHeight();//window.innerHeight;
         $('#yourname').text(user.emailid);
         connectSocket();
         initCanvas();
@@ -245,8 +245,7 @@
         };
         self.callThis = function (data, event) {
             if (self.emailId == user.emailid) {
-                var clr = '#' + Math.floor(Math.random() * 16777215).toString(16);
-                event.target.style.backgroundColor = clr
+                
                // canvas.freeDrawingBrush.width = Math.floor((Math.random() * 10) + 2);
                // canvas.freeDrawingBrush.color = clr;
                // toastr.warning("Your pencil color is changed");
