@@ -146,7 +146,7 @@ body {
 }
 .userlist h3{
     color: #ccc;
-    font-size: 18px;
+    font-size: 14px;
     margin:0px;
     padding-top:15px;
     padding-bottom:15px;
@@ -331,6 +331,7 @@ body {
     #mainlayout{
         left: 0;
         top:45px;
+        bottom: 40px;
     }
     .text-vertical-center h1 {
         margin: 0 0 15px;
@@ -356,10 +357,6 @@ body {
         top: auto;
         right: 0px;
         bottom:0;
-    }
-    .userlist h3{
-        color: #ccc;
-        font-size: 14px;
     }
 }
 @media(max-width:600px){
