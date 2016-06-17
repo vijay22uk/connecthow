@@ -19,16 +19,16 @@ block content
             li
                 span.onlinethis(data-toggle='tooltip', title="clear All" , onclick="clearAll()")
                     i.fa.fa-file-o
-            li
+            li.tool-select
                 span.onlinethis-eraser(data-toggle='tooltip',onclick="eraserMode()" title="Eraser")
                     i.fa.fa-eraser
-            li
+            li.tool-select
                 span.onlinethis.red(data-toggle='tooltip',onclick="redPencil()", title="change pencil red")  
-            li
+            li.tool-select
                 span.onlinethis.green(data-toggle='tooltip',onclick="greenPencil()", title="change pencil green")
-            li
+            li.tool-select
                 span.onlinethis.blue(data-toggle='tooltip',onclick="bluePencil()", title="change pencil blue")
-            li
+            li.tool-select.active-tool
                 span.onlinethis.black(data-toggle='tooltip',onclick="blackPencil()", title="change pencil black")  
             li.students
                 span(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
