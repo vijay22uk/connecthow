@@ -85,11 +85,11 @@ body {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -o-filter: blur(3px);
-    -ms-filter: blur(3px);
-    filter: blur(3px);
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
 }
 
 
@@ -107,7 +107,7 @@ body {
     padding:0px;
     text-align: center;
     font-weight: 900;
-    font-size: 30px;
+    font-size: 25px;
     line-height: 45px;
     position: fixed;
     left: 0px;
@@ -115,6 +115,7 @@ body {
     width: 100%;
     background-color: #b84d45;
     color: #fff;
+    text-shadow:1px 1px 1px rgba(0,0,0,0.6);
 }
 #mainlayout{
     position: absolute;
@@ -140,6 +141,9 @@ body {
     position: fixed;
     overflow: auto;
 }
+.Class-room-details{
+    float: left;
+}
 .userlist h3{
     color: #ccc;
     font-size: 18px;
@@ -151,12 +155,24 @@ body {
 }
 .userlist h3 span{
     color: #fff;
-    text-transform: none
+    text-transform: none;
+    font-style:italic;
+}
+.labelText{
+    width: 110px;
+    float:left;
+    font-style: normal!important
+}
+.CRName{
+    width:130px;
+    float:left;
 }
 .userlist ul{
     margin: 0px;
     list-style: none;
     padding:0px;
+    float:left;
+    width:100%;
 }
 .userlist ul li{
     margin-bottom: 1px;    
@@ -230,16 +246,16 @@ body {
     font-size: 20px;
 }
 .tool-box li > span.red:before{
-    background: red;
+    background: #cf2a28;
 }
 .tool-box li > span.green:before{
-    background: green;
+    background: #309e2e;
 }
 .tool-box li > span.blue:before{
-    background: blue;
+    background: #2878b7;
 }
 .tool-box li > span.black:before{
-    background: black;
+    background: #000000;
 }
 .students{
     display: none;
@@ -247,27 +263,102 @@ body {
 .thisuser .caller-switch{
     display: none;
 }
+
+.navList {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    float: right;
+    background-color: transparent;
+    border: 0px solid transparent;
+    margin-right: 15px;
+    cursor: pointer;
+    display:none;
+}
+.navList > span {
+    width: 30px;
+    height: 3px;
+    float: left;
+    background-color: rgba(255,255,255,0.6);
+    position: relative;
+}
+.navList > span:before,
+.navList > span:after {
+    position: absolute;
+    left: 0;
+    width: 30px;
+    height: 3px;
+    background-color: rgba(255,255,255,0.6);
+    content: '';
+    -webkit-transition: all ease-in-out .15s;
+    -o-transition: all ease-in-out .15s;
+    transition: all ease-in-out .15s;
+}
+.navList > span:before {
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    width: 12px;
+    top: -5px;
+}
+.navList > span:after {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    width: 12px;
+    bottom: -5px;
+}
 @media(max-width:768px){
     .tool-box{
         z-index: 100;
     }
     .students{
         display: inline-block;
+        float:right!important;
     }
     .userlist{
         display: none;
+         bottom:40px;
+         width:280px;
+    }
+    .navList {
+        display: inline-block;
     }
     #mainlayout{
         left: 0;
         top:45px;
     }
+    .text-vertical-center h1 {
+        margin: 0 0 15px;
+        font-size: 35px;
+    }
+    .login-box {
+        padding-top: 10px;
+    }
+    .button_login{
+        margin-top: 10px;
+    }
+    .form-input{
+        height: 35px;
+        padding: 15px;
+        font-size: 16px;
+    }
+    .main-layout{
+        padding-bottom: 40px;
+    }
+    .tool-box{
+        position: fixed;
+        left: 0;
+        top: auto;
+        right: 0px;
+        bottom:0;
+    }
 }
 @media(max-width:600px){
     .login{
-        width:98%;
+        width:90%;
         margin:0 auto;
     }
-    .students{
-        display: inline-block;
-    }
+    
 }
+

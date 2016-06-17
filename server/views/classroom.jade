@@ -4,9 +4,11 @@ block content
     .main-layout
         h1.text-center Smart Guru
         .userlist
-            h3.col-md-12
-                | Class Room : 
-                span(data-bind="text: classRoom")
+            button.navList(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
+                span
+            h3.col-md-12.Class-room-details
+                span.labelText Class Room : 
+                span.CRName(data-bind="text: classRoom")
             ul.col-md-12(data-bind="foreach: participants")
                 li(data-bind="css: { thisuser: isThisUser() }")
                     span(data-bind="text: userName")              
