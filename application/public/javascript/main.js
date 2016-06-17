@@ -142,7 +142,7 @@
             perPixelTargetFind: true,
             targetFindTolerance: 5,
         });
-
+        canvas.freeDrawingBrush.width =4;
         attachCanvasCallbacks(canvas)
         canvas.isDrawingMode = true;
         //canvas.freeDrawingBrush.width = 5;
@@ -247,9 +247,9 @@
             if (self.emailId == user.emailid) {
                 var clr = '#' + Math.floor(Math.random() * 16777215).toString(16);
                 event.target.style.backgroundColor = clr
-                canvas.freeDrawingBrush.width = Math.floor((Math.random() * 10) + 2);
-                canvas.freeDrawingBrush.color = clr;
-                toastr.warning("Your pencil color is changed");
+               // canvas.freeDrawingBrush.width = Math.floor((Math.random() * 10) + 2);
+               // canvas.freeDrawingBrush.color = clr;
+               // toastr.warning("Your pencil color is changed");
             };
 
             makeCall(self.userName);
@@ -353,5 +353,50 @@
         socket.emit('message', sendData);
 
     }
+    // tool events
+function redPencil(){
+canvas.freeDrawingBrush.width = 4;
+canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+canvas.freeDrawingBrush.color = "red";
+}
+function greeenPencil(){
+canvas.freeDrawingBrush.width = 4;
+canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+canvas.freeDrawingBrush.color = "green";
+}
+function bluePencil(){
+canvas.freeDrawingBrush.width = 4;
+canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+canvas.freeDrawingBrush.color = "blue";
+}
+function blackPencil(){
+canvas.freeDrawingBrush.width = 4;
+canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
+canvas.freeDrawingBrush.color = "blue";
+}
 
+
+
+    function clearAll(){
+        var sendData = {
+            room: user.classroom,
+            emailId: "!!all",
+            target: 'canvas',
+            type:"clearAll",
+        }
+        socket.emit('message', sendData);  
+        clearCanvasNow();
+    }
+    function eraserMode(){
+        canvas.freeDrawingBrush.width = 10;
+        canvas.freeDrawingBrush.color = "white";
+        canvas.freeDrawingCursor = "url('/icons/eraser.png') 8 8,auto";
+    }
+// exporting globals    
+window.clearAll = clearAll;
+window.eraserMode = eraserMode;
+window.redPencil = redPencil;
+window.bluePencil = bluePencil;
+window.greeenPencil = greeenPencil;
+window.blackPencil =blackPencil; 
 })(window);
