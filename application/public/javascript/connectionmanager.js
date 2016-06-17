@@ -1,22 +1,19 @@
 ﻿/// <reference path="adapter.js" />
+//deleting old bandwwidth line and settting new bandwidth
 var BandwidthHandler = (function () {
     function setBAS(sdp, bandwidth, isScreen) {
         if (!!navigator.mozGetUserMedia || !bandwidth) {
             return sdp;
         }
-
         if (bandwidth.audio || bandwidth.video || bandwidth.data) {
             sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
         }
-
         if (bandwidth.audio) {
             sdp = sdp.replace(/a=mid:audio\r\n/g, 'a=mid:audio\r\nb=AS:' + bandwidth.audio + '\r\n');
         }
-
         if (bandwidth.video) {
             sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:' + (isScreen ? bandwidth.screen : bandwidth.video) + '\r\n');
         }
-
         return sdp;
     }
 
@@ -324,8 +321,8 @@ WebRtcDemo.ConnectionManager = (function () {
                     desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
                         'stereo': 0, // to disable stereo (to force mono audio)
                         'sprop-stereo': 0,
-                        'maxaveragebitrate': 12000, // 500 kbits
-                        'maxplaybackrate': 8000, // 500 kbits
+                        'maxaveragebitrate': 12000,
+                        'maxplaybackrate': 8000, 
                         'cbr': 0, // disable cbr
                         'useinbandfec': 1, // use inband fec
                         'usedtx': 0, // use dtx
@@ -527,8 +524,8 @@ WebRtcDemo.ConnectionManager = (function () {
             desc.sdp = BandwidthHandler.setOpusAttributes(desc.sdp, {
                 'stereo': 0, // to disable stereo (to force mono audio)
                 'sprop-stereo': 0,
-                'maxaveragebitrate': 12000, // 500 kbits
-                'maxplaybackrate': 8000, // 500 kbits
+                'maxaveragebitrate': 12000, 
+                'maxplaybackrate': 8000,
                 'cbr': 0, // disable cbr
                 'useinbandfec': 1, // use inband fec
                 'usedtx': 0, // use dtx
