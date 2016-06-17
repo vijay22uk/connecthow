@@ -24,7 +24,8 @@ module.exports = function (io) {
         socket.on('disconnect', function (socket) {
            var userClassRoom = getClassRoom(classroom);
            console.log("disconnect"+ emailId);
-           userClassRoom[emailId] = false;
+           //userClassRoom[emailId] = false;
+           delete userClassRoom[emailId];
            //delete object if zero
            io.in(classroom).emit("message",{ room:classroom,target:"leave",emailId:emailId  });
         });

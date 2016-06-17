@@ -21,15 +21,15 @@ block content
                 span.onlinethis-eraser(data-toggle='tooltip',onclick="eraserMode()" title="Eraser")
                     i.fa.fa-eraser
             li
-                span.onlinethis.red(data-toggle='tooltip', title="change pencil red")  
+                span.onlinethis.red(data-toggle='tooltip',onclick="redPencil()", title="change pencil red")  
             li
-                span.onlinethis.green(data-toggle='tooltip', title="change pencil green")
+                span.onlinethis.green(data-toggle='tooltip',onclick="greenPencil()", title="change pencil green")
             li
-                span.onlinethis.blue(data-toggle='tooltip', title="change pencil blue")
+                span.onlinethis.blue(data-toggle='tooltip',onclick="bluePencil()", title="change pencil blue")
             li
-                span.onlinethis.black(data-toggle='tooltip', title="change pencil black")  
+                span.onlinethis.black(data-toggle='tooltip',onclick="blackPencil()", title="change pencil black")  
             li.students
-                span(data-toggle='tooltip', title="clear All" , onclick="clearAll()")
+                span(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
                     i.fa.fa-users         
         #mainlayout
             #canvascontainer

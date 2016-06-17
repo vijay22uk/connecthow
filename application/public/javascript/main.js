@@ -358,7 +358,7 @@ canvas.freeDrawingBrush.width = 4;
 canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
 canvas.freeDrawingBrush.color = "red";
 }
-function greeenPencil(){
+function greenPencil(){
 canvas.freeDrawingBrush.width = 4;
 canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
 canvas.freeDrawingBrush.color = "green";
@@ -372,6 +372,10 @@ function blackPencil(){
 canvas.freeDrawingBrush.width = 4;
 canvas.freeDrawingCursor = "url('/icons/pencil.png') 2 25,auto";
 canvas.freeDrawingBrush.color = "blue";
+}
+
+function toggleUsers(){
+$('.userlist').toggle();
 }
 
 
@@ -396,6 +400,7 @@ window.clearAll = clearAll;
 window.eraserMode = eraserMode;
 window.redPencil = redPencil;
 window.bluePencil = bluePencil;
-window.greeenPencil = greeenPencil;
+window.greenPencil = greenPencil;
 window.blackPencil =blackPencil; 
+window.toggleUsers  =toggleUsers ;
 })(window);

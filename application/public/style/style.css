@@ -244,8 +244,13 @@ body {
 .students{
     display: none;
 }
-
+.thisuser .caller-switch{
+    display: none;
+}
 @media(max-width:768px){
+    .tool-box{
+        z-index: 100;
+    }
     .students{
         display: inline-block;
     }
