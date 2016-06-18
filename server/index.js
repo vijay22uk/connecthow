@@ -7,6 +7,9 @@
     var bodyParser = require("body-parser");
     var socketHelper = require('./modules/socket');
     var mongoDBConnectionString = "mongodb://localhost/VJ";
+    var ACCOUNT_SID = "AC5f42bb216296d8a49597c64ba6a16326";
+    var AUTH_TOKEN = "765f8cac248d09b1a5dff812b1c3caa8";
+    var twilio = require('twilio')(ACCOUNT_SID, AUTH_TOKEN);
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,6 +43,18 @@
         res.render('classroom', { emailid: email, classRoom: classRoom });
 
     });
+   // twilio turn server
+   app.get('/twilio', function (req, res, next) {
+    twilio.tokens.create({}, function (err, response) {
+        if (err) {
+            res.status(500).send({ "success": false, error: err });
+        } else {
+            //console.log(response);
+            res.json({ "success": true, s: 200, "iceServers": response.ice_servers });
+        }
+    });
+});
+
     socketHelper(io);
     http.listen(port, function () {
         console.log('https  listening on :%d', port);

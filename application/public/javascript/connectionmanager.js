@@ -168,14 +168,19 @@ WebRtcDemo.ConnectionManager = (function () {
         { url: "stun:global.stun.twilio.com:3478?transport=udp" },
         { url: 'stun:stun.l.google.com:19302' },
         {
-            url: 'turn:192.158.29.39:3478?transport=udp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808'
+            url: 'turn:global.turn.twilio.com:3478?transport=udp',
+            credential: 'HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=',
+            username: '32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8'
         },
         {
-            url: 'turn:192.158.29.39:3478?transport=tcp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808'
+            url: 'urn:global.turn.twilio.com:3478?transport=tcp',
+            credential: 'HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=',
+            username: '32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8'
+        },
+        { 
+          credential:"HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=",
+          url:"turn:global.turn.twilio.com:443?transport=tcp",
+          username:"32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8"
         },
         {
             url: 'turn:numb.viagenie.ca',
@@ -200,7 +205,7 @@ WebRtcDemo.ConnectionManager = (function () {
     },
     // Create a new WebRTC Peer Connection with the given partner
     _createConnection = function (partnerClientId, isVideoCall) {
-        var connection = new RTCPeerConnection({ iceServers: _iceServers }, {
+        var connection = new RTCPeerConnection({ iceServers: window.iceList || _iceServers }, {
             optional: [
                 { DtlsSrtpKeyAgreement: true }
             ]
@@ -496,7 +501,6 @@ WebRtcDemo.ConnectionManager = (function () {
             // Let the user know which streams are leaving
             // todo: foreach connection.remoteStreams -> onStreamRemoved(stream.id)
             _onStreamRemovedCallback(connection, null);
-            debugger
             // Close the connection
             connection.close();
             delete _connections[partnerClientId]; // Remove the property

@@ -16,9 +16,23 @@
         canvas.width = $('#canvascontainer').innerWidth(); //window.innerWidth;
         canvas.height = $('#canvascontainer').innerHeight();//window.innerHeight;
         $('#yourname').text(user.emailid);
-        connectSocket();
-        initCanvas();
-        checkmediaStream();
+        $.ajax({
+            url: "/twilio/",
+            success: function (data, status) {
+                if (data.s === 200) {
+                    connectSocket();
+                    initCanvas();
+                    checkmediaStream(data.iceServers);
+                }
+
+            },
+            cache: false,
+            timeout: 10000,
+            error: function (err) {
+                toastr.error('Unable to fetch TURN servers');
+                window.history.back();
+            }
+        })
     }
     function connectSocket() {
         window.socket = socket = io();
@@ -291,7 +305,6 @@
         },
         onStreamRemoved: function (connection, streamId) {
             try {
-                debugger
                 var isUserInList;
                 toastr.info("Disconnected audio call with " + connection.parterId);
                 ko.utils.arrayForEach(window.app.participants(), function (participant) {
@@ -315,12 +328,17 @@
     }
 
 
-    function checkmediaStream() {
+    function checkmediaStream(ice) {
+        if (ice.length > 0) {
+            window.iceList = ice;
+        }
+
         getUserMedia(
             {
                 audio: true
             },
             function (stream) {
+
                 window.myStream = stream;
                 connectionManager.initialize(window.socket, _callbacks.onReadyForStream, _callbacks.onStreamAdded, _callbacks.onStreamRemoved, _callbacks.onStreamAddedConference, _callbacks.onStreamRemovedConference);
 
