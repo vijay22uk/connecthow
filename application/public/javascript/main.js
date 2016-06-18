@@ -292,17 +292,23 @@
         onStreamAdded: function (connection, event) {
             toastr.success("Received audio call from " + connection.parterId);
             var isUserInList;
-            attachMediaStream(document.getElementById('audio_' + connection.parterId), event.stream); // from adapter.js
-            ko.utils.arrayForEach(window.app.participants(), function (participant) {
-                if (participant.emailId == connection.parterId) {
-                    isUserInList = participant;
+            try {
+
+
+                attachMediaStream(document.getElementById('audio_' + connection.parterId), event.stream); // from adapter.js
+                ko.utils.arrayForEach(window.app.participants(), function (participant) {
+                    if (participant.emailId == connection.parterId) {
+                        isUserInList = participant;
+                    }
+                });
+                if (isUserInList) {
+                    isUserInList.hasStream(true);
                 }
-            });
-            if (isUserInList) {
-                isUserInList.hasStream(true);
+                window.inCall = true;
+            } catch (e) {
+                toastr.error("Sonething is not wrong");
             }
-            window.inCall = true;
-            return false;
+
         },
         onStreamRemoved: function (connection, streamId) {
             try {
