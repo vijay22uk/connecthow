@@ -30,6 +30,7 @@
             timeout: 10000,
             error: function (err) {
                 toastr.error('Unable to fetch TURN servers');
+                alert("Unable to fetch TURN servers !! trial account !!")
                 window.history.back();
             }
         })
