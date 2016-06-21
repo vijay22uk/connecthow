@@ -14,7 +14,7 @@ block content
                     span(data-bind="text: userName")              
                     span.call-on.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
                     span.call-off.caller-switch.fa.fa-phone(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
-                    audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + userName}")
+                    audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + UiId}")
         ul.tool-box
             li
                 span.onlinethis(data-toggle='tooltip', title="clear All" , onclick="clearAll()")

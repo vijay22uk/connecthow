@@ -248,6 +248,7 @@
         self.hasStream = ko.observable(false);
         self.userName = userName;
         self.emailId = userName;
+        self.UiId = userName.replace(/ /g,'');
         self.clearAll = function () {
             var sendData = {
                 room: user.classroom,
@@ -293,9 +294,7 @@
             toastr.success("Received audio call from " + connection.parterId);
             var isUserInList;
             try {
-
-
-                attachMediaStream(document.getElementById('audio_' + connection.parterId), event.stream); // from adapter.js
+                attachMediaStream(document.getElementById('audio_' + connection.parterId.replace(/ /g,'')), event.stream); // from adapter.js
                 ko.utils.arrayForEach(window.app.participants(), function (participant) {
                     if (participant.emailId == connection.parterId) {
                         isUserInList = participant;
