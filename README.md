@@ -5,6 +5,7 @@ Something Awesome is coming soon
 ## git clone
 ## npm install
 ## node .
-## navigate to https://localhost:8080/
+## navigate to localhost:8080/ <strike>https://localhost:8080/ </strike> (using Piggyback SSL)
+
 
 ![alt tag](https://raw.githubusercontent.com/vijay22uk/connecthow/master/screen/Untitled2.png)
