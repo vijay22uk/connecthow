@@ -15,6 +15,15 @@ block content
                     span.call-on.caller-switch.fa.fa-phone(data-bind="visible:! hasStream(), click : callThis",data-toggle='tooltip', title="Call This user")
                     span.call-off.caller-switch.fa.fa-phone(data-bind="visible:hasStream(), click: disconnectThat",data-toggle='tooltip',  title="Disconnect with this user")
                     audio(autoplay="autoplay" data-bind="attr: {'id': 'audio_' + UiId}")
+            .screens
+                .one.screen
+                    img#img_0
+                .two.screen
+                    img#img_1
+                .three.screen
+                    img#img_2
+                .four.screen
+                    img#img_3
         ul.tool-box
             li
                 span.onlinethis(data-toggle='tooltip', title="clear All" , onclick="clearAll()")
@@ -30,6 +39,9 @@ block content
                 span.onlinethis.blue(data-toggle='tooltip',onclick="bluePencil()", title="change pencil blue")
             li.tool-select.active-tool
                 span.onlinethis.black(data-toggle='tooltip',onclick="blackPencil()", title="change pencil black")  
+            li
+                span(data-toggle='tooltip', title="Save Screen" , onclick="saveScreen()")
+                    i.fa.fa-save         
             li.students
                 span(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
                     i.fa.fa-users         

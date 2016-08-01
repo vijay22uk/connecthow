@@ -10,20 +10,17 @@
     var ACCOUNT_SID = "AC5f42bb216296d8a49597c64ba6a16326";
     var AUTH_TOKEN = "765f8cac248d09b1a5dff812b1c3caa8";
     var twilio = require('twilio')(ACCOUNT_SID, AUTH_TOKEN);
+    var routes = require('./routes/tasks');
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'jade');
     var db = require('./modules/dbutil');
-    var options = {
-        key: fs.readFileSync('server/cert/private.pem'),
-        cert: fs.readFileSync('server/cert/public.pem')
-    };
-   // var http = require('https').Server(options, app); // https
     var http = require('http').Server(app); // http
     var io = require('socket.io')(http);
     app.use(express.static('./application/public'));
+    app.use('/tasks', routes);
     app.get('/', function (req, res) {
         res.render('index', { message: "welcome" });
     });
@@ -43,6 +40,12 @@
         res.render('classroom', { emailid: email, classRoom: classRoom });
 
     });
+        app.get('/dashboard', function (req, res, next) {
+        var email = req.params.emailid;
+        var classRoom = req.params.classroom;
+        res.render('dashboard', {  });
+
+    });
    // twilio turn server
    app.get('/twilio', function (req, res, next) {
     twilio.tokens.create({}, function (err, response) {
@@ -56,9 +59,23 @@
 });
 
     socketHelper(io);
-    http.listen(port, function () {
-        console.log('https  listening on :%d', port);
-    });
+    if (process.env.PORT) {
+        http.listen(port, function () {
+            console.log('https  listening on :%d', port);
+        });
+    }
+    else {
+        db.connect(mongoDBConnectionString, function (err) {
+            if (err) {
+                console.log('Unable to connect to Mongo.');
+                process.exit(1)
+            } else {
+                http.listen(port, function () {
+                    console.log('https  listening on :%d', port);
+                });
+            }
+        });
+    }
     //console.log("db ::" + mongoDBConnectionString);
     //db.connect(mongoDBConnectionString, function (err) {
     //     if (err) {

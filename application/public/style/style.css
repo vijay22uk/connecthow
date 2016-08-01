@@ -390,3 +390,23 @@ body {
  	background: url('/icons/load.gif') 50% 50% no-repeat rgb(249,249,249);
   } 	
 
+.screens{
+    width: 100%;
+    float: left;
+}
+
+.screen{
+    width: 48%;
+    float: left;
+    height: 150px;
+    border: 1px solid rgba(255,255,255,0.5);
+    margin-top: 10px;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    padding: 2px;
+
+}
+.screen > img{
+    height: 100%;
+    width: 100%;
+}

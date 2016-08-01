@@ -149,7 +149,7 @@ var BandwidthHandler = (function () {
 
 
 
-var WebRtcDemo = WebRtcDemo || {};
+var SmartGuru = SmartGuru || {};
 var id = 0;
 /************************************************
 ConnectionManager.js
@@ -161,7 +161,7 @@ of the app.
 WebRTC API has been normalized using 'adapter.js'
 
 ************************************************/
-WebRtcDemo.ConnectionManager = (function () {
+SmartGuru.ConnectionManager = (function () {
     var _signaler, myConnections = {}
     _connections = {},
     _iceServers = [

@@ -1,18 +1,29 @@
 ﻿(function (window) {
     'use strict';
     var canvasId = "canvasuiele";
-    var socket, canvas, isJoined, app;
-    var connectionManager = WebRtcDemo.ConnectionManager;
+    var canvasManager = new CanvasManager();
+    var socket, canvas, isJoined, app ;
+    var connectionManager = SmartGuru.ConnectionManager;
     $(document).ready(documentReadyCallback);
     function documentReadyCallback() {
         $('.tool-select').on('click', function () {
             $('.tool-select').removeClass("active-tool");
             $(this).addClass("active-tool");
         });
+        $(document).on('click','.screen',function(){
+            //get thumbnail of current 
+            var currentCanvas = canvasManager.getCurrentCanvas();
+            var dataURL = currentCanvas.toDataURL({quality:.2});
+            document.getElementById('img_'+canvasManager.currentScreen).src = dataURL;
+            //switch
+                //TODO
+       
+        })
         $('body').removeClass("isloading");
         $(".loader").fadeOut("slow");
         toastr.options.progressBar = true;
         var canvas = document.getElementById(canvasId);
+        canvasManager.currentScreen = 0;
         canvas.width = $('#canvascontainer').innerWidth(); //window.innerWidth;
         canvas.height = $('#canvascontainer').innerHeight();//window.innerHeight;
         $('#yourname').text(user.emailid);
@@ -161,6 +172,7 @@
             perPixelTargetFind: true,
             targetFindTolerance: 5,
         });
+        canvasManager.canvasArr.push(canvas);
         canvas.freeDrawingBrush.width = 4;
         attachCanvasCallbacks(canvas)
         canvas.isDrawingMode = true;
@@ -190,7 +202,8 @@
                 emailId: user.emailid,
                 target: 'canvas',
                 type: 'path',
-                drawingData: drawingData
+                drawingData: drawingData,
+                screenId:1
             }
             socket.emit('message', sendData);
 
@@ -255,6 +268,7 @@
                 emailId: "!!all",
                 target: 'canvas',
                 type: "clearAll",
+                screenId:1
             }
             socket.emit('message', sendData);
             clearCanvasNow();
@@ -375,7 +389,8 @@
             room: user.classroom,
             emailId: user.emailid,
             target: 'disconnectCall',
-            targetUserId: id
+            targetUserId: id,
+            screenId:1
         }
         socket.emit('message', sendData);
 
@@ -414,6 +429,7 @@
             emailId: "!!all",
             target: 'canvas',
             type: "clearAll",
+            screenId:1
         }
         socket.emit('message', sendData);
         clearCanvasNow();
@@ -423,6 +439,50 @@
         canvas.freeDrawingBrush.color = "white";
         canvas.freeDrawingCursor = "url('/icons/eraser.png') 8 8,auto";
     }
+    function saveScreen() {
+        var name = prompt("enter screenshot name", new Date().toDateString());
+        if (name != null) {
+               canvasManager.saveData(name);
+        }
+    }
+    function CanvasManager(){
+        var self = this;
+        self.canvasArr = [];
+        self.currentScreen = 0;
+        self.getCurrentCanvas = function(){
+            return self.canvasArr[self.currentScreen];
+        }
+        self.saveData = function(name){
+            var currentCanvas = self.getCurrentCanvas();
+            var dataURL = currentCanvas.toDataURL({quality:.2});
+            var saveData = {
+                name: name,
+                dataURL: dataURL,
+                room: user.classroom,
+                emailId: user.emailid,
+
+            }
+           postDataToSave(saveData);
+        }
+
+    }
+    function postDataToSave(data){
+
+         $.ajax({
+            url: "/tasks/saveScreenShot/",
+            method:"POST",
+            data : data,
+            success: function (data) {
+                debugger
+            toastr.success("Screen-shot saved");
+            },
+            error: function (err) {
+                debugger
+                toastr.error('Unable save screen-shot');
+            }
+        })
+
+    }
     // exporting globals    
     window.clearAll = clearAll;
     window.eraserMode = eraserMode;
@@ -431,6 +491,7 @@
     window.greenPencil = greenPencil;
     window.blackPencil = blackPencil;
     window.toggleUsers = toggleUsers;
+    window.saveScreen = saveScreen;
     // GA tracking
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
