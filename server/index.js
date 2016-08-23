@@ -29,7 +29,6 @@
         var email = req.body.emailid;
         var classRoom = req.body.classroom;
         var join = req.body.optradio;
-        console.log(email, classRoom);
         res.render('classroom', {});
 
     });
@@ -59,16 +58,14 @@
     });
 
     socketHelper(io);
-    console.log("Trying to PING db at " + mongoDBConnectionString);
     db.connect(mongoDBConnectionString, function (err) {
         if (err) {
-            console.log('Unable to connect to Mongo.');
             http.listen(port, function () {
-                console.log('https  listening on :%d', port);
+                console.log('W/o DB  listening on :%d', port);
             });
         } else {
             http.listen(port, function () {
-                console.log('https  listening on :%d', port);
+                console.log('DB http listening on :%d', port);
             });
         }
     });

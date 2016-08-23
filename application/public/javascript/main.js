@@ -2,7 +2,7 @@
     'use strict';
     var canvasId = "canvasuiele";
     var canvasManager = new CanvasManager();
-    var socket, canvas, isJoined, app ;
+    var socket, canvas, isJoined, app;
     var connectionManager = SmartGuru.ConnectionManager;
     $(document).ready(documentReadyCallback);
     function documentReadyCallback() {
@@ -10,14 +10,14 @@
             $('.tool-select').removeClass("active-tool");
             $(this).addClass("active-tool");
         });
-        $(document).on('click','.screen',function(){
+        $(document).on('click', '.screen', function () {
             //get thumbnail of current 
             var currentCanvas = canvasManager.getCurrentCanvas();
-            var dataURL = currentCanvas.toDataURL({quality:.2});
-            document.getElementById('img_'+canvasManager.currentScreen).src = dataURL;
+            var dataURL = currentCanvas.toDataURL({ quality: .2 });
+            document.getElementById('img_' + canvasManager.currentScreen).src = dataURL;
             //switch
-                //TODO
-       
+            //TODO
+
         })
         $('body').removeClass("isloading");
         $(".loader").fadeOut("slow");
@@ -203,7 +203,7 @@
                 target: 'canvas',
                 type: 'path',
                 drawingData: drawingData,
-                screenId:1
+                screenId: 1
             }
             socket.emit('message', sendData);
 
@@ -261,14 +261,14 @@
         self.hasStream = ko.observable(false);
         self.userName = userName;
         self.emailId = userName;
-        self.UiId = userName.replace(/ /g,'');
+        self.UiId = userName.replace(/ /g, '');
         self.clearAll = function () {
             var sendData = {
                 room: user.classroom,
                 emailId: "!!all",
                 target: 'canvas',
                 type: "clearAll",
-                screenId:1
+                screenId: 1
             }
             socket.emit('message', sendData);
             clearCanvasNow();
@@ -308,7 +308,7 @@
             toastr.success("Received audio call from " + connection.parterId);
             var isUserInList;
             try {
-                attachMediaStream(document.getElementById('audio_' + connection.parterId.replace(/ /g,'')), event.stream); // from adapter.js
+                attachMediaStream(document.getElementById('audio_' + connection.parterId.replace(/ /g, '')), event.stream); // from adapter.js
                 ko.utils.arrayForEach(window.app.participants(), function (participant) {
                     if (participant.emailId == connection.parterId) {
                         isUserInList = participant;
@@ -390,7 +390,7 @@
             emailId: user.emailid,
             target: 'disconnectCall',
             targetUserId: id,
-            screenId:1
+            screenId: 1
         }
         socket.emit('message', sendData);
 
@@ -429,7 +429,7 @@
             emailId: "!!all",
             target: 'canvas',
             type: "clearAll",
-            screenId:1
+            screenId: 1
         }
         socket.emit('message', sendData);
         clearCanvasNow();
@@ -442,19 +442,19 @@
     function saveScreen() {
         var name = prompt("enter screenshot name", new Date().toDateString());
         if (name != null) {
-               canvasManager.saveData(name);
+            canvasManager.saveData(name);
         }
     }
-    function CanvasManager(){
+    function CanvasManager() {
         var self = this;
         self.canvasArr = [];
         self.currentScreen = 0;
-        self.getCurrentCanvas = function(){
+        self.getCurrentCanvas = function () {
             return self.canvasArr[self.currentScreen];
         }
-        self.saveData = function(name){
+        self.saveData = function (name) {
             var currentCanvas = self.getCurrentCanvas();
-            var dataURL = currentCanvas.toDataURL({quality:.2});
+            var dataURL = currentCanvas.toDataURL({ quality: .2 });
             var saveData = {
                 name: name,
                 dataURL: dataURL,
@@ -462,22 +462,20 @@
                 emailId: user.emailid,
 
             }
-           postDataToSave(saveData);
+            postDataToSave(saveData);
         }
 
     }
-    function postDataToSave(data){
+    function postDataToSave(data) {
 
-         $.ajax({
+        $.ajax({
             url: "/tasks/saveScreenShot/",
-            method:"POST",
-            data : data,
+            method: "POST",
+            data: data,
             success: function (data) {
-                debugger
-            toastr.success("Screen-shot saved");
+                toastr.success("Screen-shot saved");
             },
             error: function (err) {
-                debugger
                 toastr.error('Unable save screen-shot');
             }
         })
@@ -493,13 +491,15 @@
     window.toggleUsers = toggleUsers;
     window.saveScreen = saveScreen;
     // GA tracking
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-48046624-5', 'auto');
-  ga('send', 'pageview');
-    
-    
+    ga('create', 'UA-48046624-5', 'auto');
+    ga('send', 'pageview');
+
+
 })(window);

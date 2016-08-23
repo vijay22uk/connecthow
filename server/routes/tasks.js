@@ -11,7 +11,7 @@ router.post('/saveScreenShot/', function (req, res, next) {
     } else {
         var insertData = req.body;
         mongoDb.get().collection('screens').insert(insertData);
-
+        res.status(200).send({});
     }
 });
 
@@ -22,14 +22,11 @@ router.get('/getScreenShot/:userId/:limit', function (req, res, next) {
     } else {
         
         mongoDb.get().collection('screens').find({ emailId: req.params.userId }).toArray(function (err, doc) {
-            console.log("db access");
             if (err) {
-                console.log("eer");
                 res.status(500).send({ error: 'Something failed!' });
             } else {
                 doc = doc || [];
-                 console.log(doc);
-                res.json(doc);
+                 res.json(doc);
             }
         })
 

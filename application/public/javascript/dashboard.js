@@ -5,7 +5,7 @@
     $('body').removeClass("isloading");
 	$(".loader").fadeOut("slow");
     debugger
-     var name = prompt("enter screenshot name", new Date().toDateString());
+     var name = prompt("Your name was ?", new Date().toDateString());
         if (name != null) {
                getTopScreenShots(name,10);
         }

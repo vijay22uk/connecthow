@@ -9,3 +9,6 @@ Something Awesome is coming soon
 ## <bold>Demo</bold> https://smartguru.herokuapp.com  join a class room with a random name and ask other to join same room.
 
 ![alt tag](https://raw.githubusercontent.com/vijay22uk/connecthow/master/screen/Untitled2.png)
+
+
+### TODO Session Management(need DB credits)

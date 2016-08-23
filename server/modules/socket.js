@@ -8,7 +8,6 @@ module.exports = function (io) {
         var classroom, emailId ;
         socket.on('message', function (msg) {
             msg.timeStamp = new Date().getTime();
-            console.log(msg.room);
             socket.in(msg.room).emit("message",msg);
         });
         socket.on('join', function (data) {
@@ -17,13 +16,11 @@ module.exports = function (io) {
             var userClassRoom = getClassRoom(classroom);
             userClassRoom[emailId] = true;
             socket.join(classroom);
-            console.log("Joining "+ emailId);
             socket.emit("pendingData",users[classroom]);
             socket.to(classroom).emit("message",{ room:classroom,target:"join",emailId:emailId  });
         });
         socket.on('disconnect', function (socket) {
            var userClassRoom = getClassRoom(classroom);
-           console.log("disconnect"+ emailId);
            //userClassRoom[emailId] = false;
            delete userClassRoom[emailId];
            //delete object if zero
