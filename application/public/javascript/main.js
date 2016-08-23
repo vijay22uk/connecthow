@@ -481,6 +481,7 @@
         })
 
     }
+    
     // exporting globals    
     window.clearAll = clearAll;
     window.eraserMode = eraserMode;

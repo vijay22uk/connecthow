@@ -41,7 +41,11 @@ block content
                 span.onlinethis.black(data-toggle='tooltip',onclick="blackPencil()", title="change pencil black")  
             li
                 span(data-toggle='tooltip', title="Save Screen" , onclick="saveScreen()")
-                    i.fa.fa-save         
+                    i.fa.fa-save 
+            li
+                span(data-toggle='tooltip', title="Load Dashboard",style="cursor:pointer")
+                    a(href="/dashboard?user=#{emailid}", target="_blank")
+                        i.fa.fa-heartbeat        
             li.students
                 span(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
                     i.fa.fa-users         

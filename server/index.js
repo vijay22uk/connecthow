@@ -6,7 +6,7 @@
     var fs = require('fs');
     var bodyParser = require("body-parser");
     var socketHelper = require('./modules/socket');
-    var mongoDBConnectionString = process.env.MONGODB_URI;
+    var mongoDBConnectionString = process.env.MONGODB_URI ;
     var ACCOUNT_SID = "AC5f42bb216296d8a49597c64ba6a16326";
     var AUTH_TOKEN = "765f8cac248d09b1a5dff812b1c3caa8";
     var twilio = require('twilio')(ACCOUNT_SID, AUTH_TOKEN);
