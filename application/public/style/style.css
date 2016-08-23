@@ -312,6 +312,11 @@ body {
     width: 12px;
     bottom: -5px;
 }
+@media(max-width:385px){
+.tool-box li {
+    width: 38px;
+}
+}
 @media(max-width:768px){
     .tool-box{
         z-index: 100;
