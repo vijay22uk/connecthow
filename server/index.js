@@ -40,52 +40,36 @@
         res.render('classroom', { emailid: email, classRoom: classRoom });
 
     });
-        app.get('/dashboard', function (req, res, next) {
+    app.get('/dashboard', function (req, res, next) {
         var email = req.params.emailid;
         var classRoom = req.params.classroom;
-        res.render('dashboard', {  });
+        res.render('dashboard', {});
 
     });
-   // twilio turn server
-   app.get('/twilio', function (req, res, next) {
-    twilio.tokens.create({}, function (err, response) {
-        if (err) {
-            res.status(500).send({ "success": false, error: err });
-        } else {
-            //console.log(response);
-            res.json({ "success": true, s: 200, "iceServers": response.ice_servers });
-        }
-    });
-});
-
-    socketHelper(io);
-    if (process.env.PORT) {
-        http.listen(port, function () {
-            console.log('https  listening on :%d', port);
-        });
-    }
-    else {
-        db.connect(mongoDBConnectionString, function (err) {
+    // twilio turn server
+    app.get('/twilio', function (req, res, next) {
+        twilio.tokens.create({}, function (err, response) {
             if (err) {
-                console.log('Unable to connect to Mongo.');
-                process.exit(1)
+                res.status(500).send({ "success": false, error: err });
             } else {
-                http.listen(port, function () {
-                    console.log('https  listening on :%d', port);
-                });
+                //console.log(response);
+                res.json({ "success": true, s: 200, "iceServers": response.ice_servers });
             }
         });
-    }
-    //console.log("db ::" + mongoDBConnectionString);
-    //db.connect(mongoDBConnectionString, function (err) {
-    //     if (err) {
-    //         console.log('Unable to connect to Mongo.');
-    //         process.exit(1)
-    //     } else {
-    //         http.listen(port, function () {
-    //             console.log('https  listening on :%d', port);
-    //         });
-    //     }
-    // });
+    });
 
+    socketHelper(io);
+    console.log("Trying to PING db at " + mongoDBConnectionString);
+    db.connect(mongoDBConnectionString, function (err) {
+        if (err) {
+            console.log('Unable to connect to Mongo.');
+            http.listen(port, function () {
+                console.log('https  listening on :%d', port);
+            });
+        } else {
+            http.listen(port, function () {
+                console.log('https  listening on :%d', port);
+            });
+        }
+    });
 })();
