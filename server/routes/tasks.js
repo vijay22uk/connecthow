@@ -9,7 +9,8 @@ router.post('/saveScreenShot/', function (req, res, next) {
     if (!mongoDb.get()) {
         res.status(500).send({ "success": false, "msg": "Ubale to access DB" });
     } else {
-        mongoDb.get().collection('screens').count({ emailId: req.params.userId }, function (err, count) {
+        mongoDb.get().collection('screens').count({ emailId:  req.body.emailId }, function (err, count) {
+            console.log(count);
             if (count < 10) {
                 var insertData = req.body;
                 mongoDb.get().collection('screens').insert(insertData);
