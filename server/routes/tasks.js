@@ -10,8 +10,7 @@ router.post('/saveScreenShot/', function (req, res, next) {
         res.status(500).send({ "success": false, "msg": "Ubale to access DB" });
     } else {
         var insertData = req.body;
-        console.log(insertData);
-        mongoDb.get().collection('screens').insert(insertData)
+        mongoDb.get().collection('screens').insert(insertData);
 
     }
 });
