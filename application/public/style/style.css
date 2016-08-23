@@ -431,6 +431,6 @@ body {
 .info-me a:active,.info-me a:visited{
     color:#f7f7f7 !important;
 }
-.home .info-me a,.home a:active,.home .info-me a:visited{
-color: #337ab7;
+.home .info-me>a,.home  .info-me>a:active,.home .info-me>a:visited{
+color: #337ab7 !important;
 }
