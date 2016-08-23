@@ -410,3 +410,19 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.info-me{
+    position: fixed; top: 2px; left: 5px; z-index: 22;
+}
+
+.info-me i{
+    font-size: 3em;
+}
+.info-me a{
+    
+    color:#f7f7f7 !important;
+    
+}
+.info-me a:active,.info-me a:visited{
+    color:#f7f7f7 !important;
+}
