@@ -1,6 +1,8 @@
 extends layout
 
-block content
+block contentcontent
+    a(href="/dashboard?user=#{emailid}", target="_blank", data-toggle='tooltip', title="Load Dashboard")
+        i.fa.fa-linkedin-square
     .login_screen
     .login-form
         .form-inner
