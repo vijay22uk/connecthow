@@ -314,7 +314,7 @@ body {
 }
 @media(max-width:385px){
 .tool-box li {
-    width: 38px;
+    width: 32px;
 }
 }
 @media(max-width:768px){
