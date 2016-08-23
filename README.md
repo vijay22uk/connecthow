@@ -1,6 +1,6 @@
 # connecthow
 Something Awesome is coming soon
-# Nodejs WebRTC demo app. with audio calling and screen saved 
+# Nodejs socket.io WebRTC demo application with audio calling, whiteboard (canvas) and screen saving. 
 # steps to run ( update node and npm )
 ## git clone
 ## npm install
