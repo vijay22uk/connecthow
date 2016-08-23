@@ -43,9 +43,8 @@ block content
                 span(data-toggle='tooltip', title="Save Screen" , onclick="saveScreen()")
                     i.fa.fa-save 
             li
-                span(data-toggle='tooltip', title="Load Dashboard",style="cursor:pointer")
-                    a(href="/dashboard?user=#{emailid}", target="_blank")
-                        i.fa.fa-heartbeat        
+                a(href="/dashboard?user=#{emailid}", target="_blank", data-toggle='tooltip', title="Load Dashboard")
+                    i.fa.fa-heartbeat        
             li.students
                 span(data-toggle='tooltip', title="show users" , onclick="toggleUsers()")
                     i.fa.fa-users         

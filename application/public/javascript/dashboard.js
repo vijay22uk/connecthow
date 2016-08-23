@@ -25,7 +25,6 @@
                 toastr.success("Screen-shots loaded");
             },
             error: function (err) {
-                debugger
                 toastr.error('Unable to get screen-shots');
             }
         })
