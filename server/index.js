@@ -20,18 +20,29 @@
     var http = require('http').Server(app); // http
     var io = require('socket.io')(http);
     
-    var resArray = ["stun.l.google.com:19302",
-"stun1.l.google.com:19302",
-"stun2.l.google.com:19302",
-"stun3.l.google.com:19302",
-"stun4.l.google.com:19302",
-"stun.ekiga.net",
-"stun.ideasip.com",
-"stun.rixtelecom.se",
-"stun.schlund.de",
-"stun.voiparound.com",
-"stun.voipbuster.com",
-"stun.voxgratia.org"]
+    var resArray = [
+        { url: "stun:global.stun.twilio.com:3478?transport=udp" },
+        { url: 'stun:stun.l.google.com:19302' },
+        {
+            url: 'turn:global.turn.twilio.com:3478?transport=udp',
+            credential: 'HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=',
+            username: '32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8'
+        },
+        {
+            url: 'urn:global.turn.twilio.com:3478?transport=tcp',
+            credential: 'HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=',
+            username: '32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8'
+        },
+        { 
+          credential:"HtboCOTcJTqj3O11vRVgSxb1CI3WChCjN54YyKfInYY=",
+          url:"turn:global.turn.twilio.com:443?transport=tcp",
+          username:"32cfa6f77aa939179a701e0eb4b540bd37d916a8168c45b948dd9969b0ad23b8"
+        },
+        {
+            url: 'turn:numb.viagenie.ca',
+            credential: 'muazkh',
+            username: 'webrtc@live.com'
+        }];
     
     app.use(express.static('./application/public'));
     app.use('/tasks', routes);
