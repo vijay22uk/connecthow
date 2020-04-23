@@ -19,6 +19,20 @@
     var db = require('./modules/dbutil');
     var http = require('http').Server(app); // http
     var io = require('socket.io')(http);
+    
+    var resArray = ["stun.l.google.com:19302",
+"stun1.l.google.com:19302",
+"stun2.l.google.com:19302",
+"stun3.l.google.com:19302",
+"stun4.l.google.com:19302",
+"stun.ekiga.net",
+"stun.ideasip.com",
+"stun.rixtelecom.se",
+"stun.schlund.de",
+"stun.voiparound.com",
+"stun.voipbuster.com",
+"stun.voxgratia.org"]
+    
     app.use(express.static('./application/public'));
     app.use('/tasks', routes);
     app.get('/', function (req, res) {
@@ -52,7 +66,7 @@
                 res.status(500).send({ "success": false, error: err });
             } else {
                 //console.log(response);
-                res.json({ "success": true, s: 200, "iceServers": response.ice_servers });
+                res.json({ "success": true, s: 200, "iceServers": resArray });
             }
         });
     });
